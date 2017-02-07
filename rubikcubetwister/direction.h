@@ -11,23 +11,14 @@ enum Rotation {
     CLOCKWISE = 3
 };
 
-//enum PlaneType {
-//    FRONT = 0,
-//    RIGHT = 1,
-//    UP = 2,
-//    BACK = 3,
-//    LEFT = 4,
-//    DOWN = 5
-//};
-
-//enum PlaneType {
-//    FRONT = 0,
-//    RIGHT = 1,
-//    UP = 2,
-//    BACK = 3,
-//    LEFT = 4,
-//    DOWN = 5
-//};
+enum PlaneType {
+    FRONT = 0,
+    RIGHT = 1,
+    UP = 2,
+    BACK = 3,
+    LEFT = 4,
+    DOWN = 5
+};
 
 
 
