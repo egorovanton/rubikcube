@@ -25,12 +25,16 @@ private:
         {NOTHING, RIGHT_COLUMN, TOP_ROW, NOTHING, LEFT_COLUMN, BOTTOM_ROW},  // front plane
         {LEFT_COLUMN, NOTHING, TOP_ROW, RIGHT_COLUMN, NOTHING, BOTTOM_ROW},  // right plane
         {BOTTOM_ROW, RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING},  // up plane
-        {NOTHING, LEFT_COLUMN, TOP_ROW, NOTHING, RIGHT_COLUMN, BOTTOM_ROW},  // back plane
-        {RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING, BOTTOM_ROW},  // left plane
-        {TOP_ROW, RIGHT_COLUMN, NOTHING, BOTTOM_ROW, LEFT_COLUMN, NOTHING}   // down plane
+        {NOTHING, RIGHT_COLUMN, TOP_ROW, NOTHING, LEFT_COLUMN, BOTTOM_ROW},  // back plane
+        {LEFT_COLUMN, NOTHING, TOP_ROW, RIGHT_COLUMN, NOTHING, BOTTOM_ROW},  // left plane
+        {BOTTOM_ROW, RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING}   // down plane
     };
 
+    //CAUTION
+    //theese functions reverse newLine/result respectively when needed
     void setLine(LineType line, PlaneType plane, QVector<int> newLine);
+    QVector<int> getLine(LineType line, PlaneType plane);
+
     void rotateCounterClockwise(Direction &dir);
     friend bool isRow(LineType line);
 public:
@@ -39,7 +43,6 @@ public:
     void rotate(Direction dir);
 
     QVector<QVector<QVector<int> > > getMatrix() const;
-    QVector<int> getLine(LineType line, PlaneType plane);
     QString print();
 };
 

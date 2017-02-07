@@ -1,6 +1,7 @@
 #include "cube.h"
 #include "direction.h"
 #include "QDebug"
+#include <algorithm>
 //#include <iostream>
 
 QVector<QVector<QVector<int> > > Cube::getMatrix() const
@@ -23,57 +24,62 @@ QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane)
 
     QVector<int> result(3);
 
-    int row     = isRow(line);
-    int column  = 1 - row;
-    int bottom  = line == BOTTOM_ROW;
-    int right   = line == RIGHT_COLUMN;
+    int lineNumber = (static_cast<int>(line) - 1) % 3;
+    int row = isRow(line);
+    int column = 1 - row;
 
     for (int i = 0; i < 3; ++i) {
-        result[i] = matrix[plane][i * column + 2 * bottom][i * row + 2 * right];
+        result[i] = matrix[plane][lineNumber * row + i * column][lineNumber * column + i * row];
+    }
+
+    if (plane > 2) {
+        std::reverse(result.begin(), result.end());
     }
 
     return result;
 }
 
-QString Cube::print()
-{
+QString Cube::print() {
+
     QList<QString> result;
+
     for (auto row: matrix[UP]) {
         result.append("   " + vectorToString(row));
     }
 
-    for (int row = 0; row < 3; ++row) {
-        QString temp = "";
-        for (int plane: QVector<int>{LEFT, FRONT, RIGHT, BACK}) {
-            temp += vectorToString(matrix[plane][row]);
+    for (auto row: QVector<LineType>{TOP_ROW, CENTER_ROW, BOTTOM_ROW}) {
+        QString line = "";
+        for (auto plane: QVector<PlaneType>{LEFT, FRONT, RIGHT, BACK}) {
+            line += vectorToString(getLine(row, plane));
         }
-        result.append(temp);
+        result.append(line);
     }
 
-    for (auto row: matrix[DOWN]) {
-        result.append("   " + vectorToString(row));
+    for (int i = 2; i > -1; --i) {
+        result.append("   " + vectorToString(matrix[DOWN][i]));
     }
 
-
+    result.append("");
     return result.join("\n");
 }
 
 void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine)
 {
     if (line == NOTHING) {
-        qWarning("Cube::setLine(Cube::LineType, PlaneType, QVector<int>)");
+        qWarning("Cube::getLine(Cube::LineType, PlaneType)");
         qWarning("\tLineType is NOTHING");
-
-        return;
     }
 
-    int row     = isRow(line);
-    int column  = 1 - row;
-    int bottom  = line == BOTTOM_ROW;
-    int right   = line == RIGHT_COLUMN;
+    if (plane > 2) {
+        std::reverse(newLine.begin(), newLine.end());
+    }
+
+    int lineNumber = (static_cast<int>(line) - 1) % 3;
+    int row = isRow(line);
+    int column = 1 - row;
 
     for (int i = 0; i < 3; ++i) {
-        matrix[plane][i * column + 2 * bottom][i * row + 2 * right] = newLine[i];
+        matrix[plane][lineNumber * row + i * column][lineNumber * column + i * row] = newLine[i];
     }
 }
 
@@ -95,8 +101,11 @@ void Cube::rotate(Direction dir)
     PlaneType plane = dir.getPlane();
     Rotation rot = dir.getRotation();
 
-    for (int i = 0; i < rot; ++i) {
+    for (int i = 0; i < (plane > 2 ? 4 - rot : rot); ++i) {
         rotateMatrix(matrix[plane]);
+    }
+
+    for (int i = 0; i < rot; ++i) {
         rotateCounterClockwise(dir);
     }
 
