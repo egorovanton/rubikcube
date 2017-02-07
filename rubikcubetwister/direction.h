@@ -30,6 +30,7 @@ private:
 
 public:
     Direction(QString str);
+    Direction(PlaneType p, Rotation r);
 
     QVector<PlaneType> getNeighbours();
 

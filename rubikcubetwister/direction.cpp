@@ -53,6 +53,8 @@ Direction::Direction(QString str)
 
 }
 
+Direction::Direction(PlaneType p, Rotation r): plane(p), rotation(r) {}
+
 // fixme return neighbours in correct order
 QVector<PlaneType> Direction::getNeighbours()
 {
