@@ -12,15 +12,13 @@ enum Rotation {
 };
 
 enum PlaneType {
-    UP = 0,
+    FRONT = 0,
     RIGHT = 1,
-    BACK = 2,
-    DOWN = 3,
-    FRONT = 5,
-    LEFT = 4
+    UP = 2,
+    BACK = 3,
+    LEFT = 4,
+    DOWN = 5
 };
-
-
 
 class Direction
 {
