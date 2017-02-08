@@ -42,6 +42,9 @@ public:
     Cube();
 
     void rotate(Direction dir);
+    void rotate(QString dir);
+    void rotate(PlaneType plane, Rotation rotation);
+
 
     QVector<QVector<QVector<int> > > getMatrix() const;
     QString print();

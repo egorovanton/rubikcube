@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
 
     for (auto str: directions) {
         cout << "direction : " << str.toStdString() << endl;
-        Direction dir(str);
-        cube.rotate(dir);
+//        Direction dir(str);
+        cube.rotate(str);
         cout << cube.print().toStdString() << endl << endl;
     }
 
