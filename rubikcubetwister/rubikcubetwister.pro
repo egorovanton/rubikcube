@@ -30,3 +30,6 @@ HEADERS += \
     cube.h \
     utils.h \
     utils_implementation.h
+
+DISTFILES += \
+    dontreadme.txt
