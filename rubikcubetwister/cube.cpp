@@ -15,27 +15,10 @@ bool isRow(Cube::LineType line) {
 
 QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane)
 {
-    if (line == NOTHING) {
-        qWarning("Cube::getLine(Cube::LineType, PlaneType)");
-        qWarning("\tLineType is NOTHING");
-
-        return QVector<int>();
-    }
-
-    QVector<int> result(3);
-
-    int lineNumber = (static_cast<int>(line) - 1) % 3;
-    int row = isRow(line);
-    int column = 1 - row;
-
-    for (int i = 0; i < 3; ++i) {
-        result[i] = matrix[plane][lineNumber * row + i * column][lineNumber * column + i * row];
-    }
-
+    QVector<int> result = getRawLine(line, plane);
     if (plane > 2) {
         std::reverse(result.begin(), result.end());
     }
-
     return result;
 }
 
@@ -61,6 +44,45 @@ QString Cube::print() {
 
     result.append("");
     return result.join("\n");
+}
+
+QVector<int> Cube::getRawLine(LineType line, PlaneType plane)
+{
+    if (line == NOTHING) {
+        qWarning("Cube::getRawLine(Cube::LineType, PlaneType)");
+        qWarning("\tLineType is NOTHING");
+
+        return QVector<int>();
+    }
+
+    QVector<int> result(3);
+
+    int lineNumber = (static_cast<int>(line) - 1) % 3;
+    int row = isRow(line);
+    int column = 1 - row;
+
+    for (int i = 0; i < 3; ++i) {
+        result[i] = matrix[plane][lineNumber * row + i * column][lineNumber * column + i * row];
+    }
+
+    return result;
+
+}
+
+std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2)
+{
+    return std::make_tuple((PlaneType) getRawLine(RELATION_TABLE[plane1][plane2], plane1)[1],
+            (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1]);
+}
+
+std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3)
+{
+
+    int x1 = getRawLine(RELATION_TABLE[plane1][plane2], plane1)[(static_cast<int>(RELATION_TABLE[plane1][plane3]) - 1) % 3];
+    int x2 = getRawLine(RELATION_TABLE[plane2][plane3], plane2)[(static_cast<int>(RELATION_TABLE[plane2][plane1]) - 1) % 3];
+    int x3 = getRawLine(RELATION_TABLE[plane3][plane1], plane3)[(static_cast<int>(RELATION_TABLE[plane3][plane2]) - 1) % 3];
+
+    return std::make_tuple((PlaneType) x1, (PlaneType) x2, (PlaneType) x3);
 }
 
 void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine)

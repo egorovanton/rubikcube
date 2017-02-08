@@ -2,6 +2,7 @@
 #define CUBE_H
 
 #include <QVector>
+#include <tuple>
 #include "direction.h"
 #include "utils.h"
 
@@ -44,6 +45,14 @@ public:
 
     QVector<QVector<QVector<int> > > getMatrix() const;
     QString print();
+
+    //returns line without without reversing it
+    QVector<int> getRawLine(LineType line, PlaneType plane);
+
+    std::tuple<PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2);
+    std::tuple<PlaneType, PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3);
+
+
 };
 
 #endif // CUBE_H
