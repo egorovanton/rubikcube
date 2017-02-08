@@ -134,6 +134,16 @@ void Cube::rotate(Direction dir)
 
 }
 
+void Cube::rotate(QString dir)
+{
+    rotate(Direction(dir));
+}
+
+void Cube::rotate(PlaneType plane, Rotation rotation)
+{
+    rotate(Direction(plane, rotation));
+}
+
 void Cube::rotateCounterClockwise(Direction &dir) {
      PlaneType plane = dir.getPlane();
      QVector<PlaneType> neighbours = dir.getNeighbours();
