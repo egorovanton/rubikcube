@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ScrambleGen.h"
+#include "generator/ScrambleGen.h"
 
 //
 // Created by alex on 2/4/17.
