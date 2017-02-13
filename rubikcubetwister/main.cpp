@@ -2,6 +2,7 @@
 #include "direction.h"
 #include <iostream>
 #include "cube.h"
+#include "utils.h"
 #include <QDebug>
 #include <random>
 
