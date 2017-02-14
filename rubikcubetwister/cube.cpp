@@ -24,14 +24,14 @@ QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane)
 
 void Cube::turnLeft()
 {
-    rotate(UP, COUNTER_CLOCKWISE);
+    rotate(UP, CLOCKWISE);
     rotate(EQUATOR, COUNTER_CLOCKWISE);
     rotate(DOWN, COUNTER_CLOCKWISE);
 }
 
 void Cube::turnRight()
 {
-    rotate(UP, CLOCKWISE);
+    rotate(UP, COUNTER_CLOCKWISE);
     rotate(EQUATOR, CLOCKWISE);
     rotate(DOWN, CLOCKWISE);
 }
@@ -136,7 +136,7 @@ Cube::Cube(): matrix(6, QVector<QVector<int>>(3, QVector<int>(3)))
         }
     }
 
-    currentFront = FRONT;
+//    currentFront = FRONT;
 
 }
 

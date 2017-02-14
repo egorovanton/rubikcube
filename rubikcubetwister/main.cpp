@@ -72,6 +72,10 @@ int main(int argc, char *argv[])
     cout << toString(Direction("E").getNeighbours(), [](PlaneType p){return QString::number((int) p);}).toStdString() << endl;
 
     Cube cube;
+    cube.turnLeft();
+    cube.turnRight();
+    cube.turnHalf();
+    cout << cube.print().toStdString() << endl;
     cube.rotate("M2");
     cube.rotate("S2");
     cube.rotate("E2");
