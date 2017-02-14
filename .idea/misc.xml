@@ -4,7 +4,7 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/generator" />
-      <file path="$PROJECT_DIR$/rubikcubetwister" />
+      <file path="$PROJECT_DIR$/twister" />
     </sourceRoots>
   </component>
 </project>
