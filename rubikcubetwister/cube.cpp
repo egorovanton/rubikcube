@@ -2,7 +2,7 @@
 #include "direction.h"
 #include "QDebug"
 #include <algorithm>
-//#include <iostream>
+#include <iostream>
 
 QVector<QVector<QVector<int> > > Cube::getMatrix() const
 {
@@ -20,6 +20,13 @@ QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane)
         std::reverse(result.begin(), result.end());
     }
     return result;
+}
+
+void Cube::turnLeft()
+{
+    rotate(UP, COUNTER_CLOCKWISE);
+    rotate(EQUATOR, COUNTER_CLOCKWISE);
+    rotate(DOWN, COUNTER_CLOCKWISE);
 }
 
 QString Cube::print() {
@@ -115,6 +122,8 @@ Cube::Cube(): matrix(6, QVector<QVector<int>>(3, QVector<int>(3)))
         }
     }
 
+    currentFront = FRONT;
+
 }
 
 
@@ -123,13 +132,19 @@ void Cube::rotate(Direction dir)
     PlaneType plane = dir.getPlane();
     Rotation rot = dir.getRotation();
 
-    for (int i = 0; i < (plane > 2 ? 4 - rot : rot); ++i) {
-        rotateMatrix(matrix[plane]);
+    if (plane < STANDING) {
+        for (int i = 0; i < (plane > 2 ? 4 - rot : rot); ++i) {
+            rotateMatrix(matrix[plane]);
+        }
+        for (int i = 0; i < rot; ++i) {
+            rotateCounterClockwise(dir);
+        }
+    } else {
+        for (int i = 0; i < 4 - rot; ++i) {
+            rotateMiddle(dir);
+        }
     }
 
-    for (int i = 0; i < rot; ++i) {
-        rotateCounterClockwise(dir);
-    }
 
 
 }
@@ -144,40 +159,89 @@ void Cube::rotate(PlaneType plane, Rotation rotation)
     rotate(Direction(plane, rotation));
 }
 
+//void Cube::setFront(PlaneType plane)
+//{
+
+//    currentFront = plane;
+//}
+
 void Cube::rotateCounterClockwise(Direction &dir) {
-     PlaneType plane = dir.getPlane();
-     QVector<PlaneType> neighbours = dir.getNeighbours();
+    PlaneType plane = dir.getPlane();
+    QVector<PlaneType> neighbours = dir.getNeighbours();
 
-     PlaneType currentPlane = neighbours[0];
-     PlaneType nextPlane = currentPlane;
-     LineType currentLine = RELATION_TABLE[currentPlane][plane];
-     LineType nextLine = currentLine;
 
-//     qDebug() << "Cube::rotate: " << "start moving lines";
-//     qDebug() << "Cube::rotate: " << "neighbours = " << neighbours;
 
-     for (int i = 0; i < 3; ++i) {
-//         qDebug() << "Cube::rotate: " << " i = " << i;
+    PlaneType currentPlane = neighbours[0];
+    PlaneType nextPlane = currentPlane;
+    LineType currentLine = RELATION_TABLE[currentPlane][plane];
+    LineType nextLine = currentLine;
 
-         nextPlane = neighbours[(i + 1) % 4];
-         nextLine = RELATION_TABLE[nextPlane][plane];
+    //    if (plane > DOWN) {
 
-//         qDebug() << "Cube::rotate: " << "nextPlane = " << nextPlane;
-//         qDebug() << "Cube::rotate: " << "nextLine = " << nextLine;
+    //    }
 
-         auto currentContents = getLine(currentLine, currentPlane);
-         auto nextContents = getLine(nextLine, nextPlane);
+    //     qDebug() << "Cube::rotate: " << "start moving lines";
+    //     qDebug() << "Cube::rotate: " << "neighbours = " << neighbours;
 
-//         qDebug() << "Cube::rotate: " << "currentContents = " << vectorToString(currentContents);
-//         qDebug() << "Cube::rotate: " << "nextContents = " << vectorToString(nextContents);
+    for (int i = 0; i < 3; ++i) {
+        //        qDebug() << "Cube::rotate: " << " i = " << i;
+        nextPlane = neighbours[(i + 1) % 4];
+        nextLine = RELATION_TABLE[nextPlane][plane];
 
-         setLine(currentLine, currentPlane, nextContents);
-         setLine(nextLine, nextPlane, currentContents);
+        //         qDebug() << "Cube::rotate: " << "nextPlane = " << nextPlane;
+        //         qDebug() << "Cube::rotate: " << "nextLine = " << nextLine;
 
-//         std::cout << print().toStdString() << std::endl;
+        auto currentContents = getLine(currentLine, currentPlane);
+        auto nextContents = getLine(nextLine, nextPlane);
 
-         currentPlane = nextPlane;
-         currentLine = nextLine;
-     }
+        //         qDebug() << "Cube::rotate: " << "currentContents = " << vectorToString(currentContents);
+        //         qDebug() << "Cube::rotate: " << "nextContents = " << vectorToString(nextContents);
 
+        setLine(currentLine, currentPlane, nextContents);
+        setLine(nextLine, nextPlane, currentContents);
+
+        //         std::cout << print().toStdString() << std::endl;
+
+        currentPlane = nextPlane;
+        currentLine = nextLine;
+    }
+
+}
+
+void Cube::rotateMiddle(Direction &dir)
+{
+    PlaneType plane = dir.getPlane();
+    QVector<PlaneType> neighbours = dir.getNeighbours();
+    QVector<LineType> lines;
+
+    switch (plane) {
+    case MIDDLE:
+        lines = {CENTER_COLUMN, CENTER_COLUMN, CENTER_COLUMN, CENTER_COLUMN};
+        break;
+    case STANDING:
+        lines = {CENTER_COLUMN, CENTER_ROW, CENTER_COLUMN, CENTER_ROW};
+        break;
+    case EQUATOR:
+        lines = {CENTER_ROW, CENTER_ROW, CENTER_ROW, CENTER_ROW};
+        break;
+    }
+
+    PlaneType currentPlane = neighbours[0];
+    PlaneType nextPlane = currentPlane;
+    LineType currentLine = lines[0];
+    LineType nextLine = currentLine;
+
+    for (int i = 0; i < 3; ++i) {
+        nextPlane = neighbours[(i + 1) % 4];
+        nextLine = lines[(i + 1) % 4];
+
+        auto currentContents = getLine(currentLine, currentPlane);
+        auto nextContents = getLine(nextLine, nextPlane);
+
+        setLine(currentLine, currentPlane, nextContents);
+        setLine(nextLine, nextPlane, currentContents);
+
+        currentPlane = nextPlane;
+        currentLine = nextLine;
+    }
 }

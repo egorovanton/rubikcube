@@ -33,6 +33,15 @@ Direction::Direction(QString str)
     case 'D':
         plane = DOWN;
         break;
+    case 'M':
+        plane = MIDDLE;
+        break;
+    case 'E':
+        plane = EQUATOR;
+        break;
+    case 'S':
+        plane = STANDING;
+        break;
     }
 
     if (str.length()  == 1) {
@@ -64,6 +73,9 @@ QVector<PlaneType> Direction::getNeighbours()
         for(int n: QVector<int>{2, 1, -1, -2}) {
 //            qDebug() << "Direction::getNeighbours " << modulus(plane + n * (plane % 2 ? -1 : 1), 6);
             neighbours.push_back(static_cast<PlaneType>(modulus(plane + n * (plane % 2 ? -1 : 1), 6)));
+        }
+        if (plane == STANDING) {
+            std::reverse(neighbours.begin(), neighbours.end());
         }
     }
 
