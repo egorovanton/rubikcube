@@ -22,7 +22,6 @@ private:
         RIGHT_COLUMN
     };
 
-
     const QVector<QVector<LineType>> RELATION_TABLE = {
         {NOTHING, RIGHT_COLUMN, TOP_ROW, NOTHING, LEFT_COLUMN, BOTTOM_ROW},  // front plane
         {LEFT_COLUMN, NOTHING, TOP_ROW, RIGHT_COLUMN, NOTHING, BOTTOM_ROW},  // right plane
@@ -40,7 +39,9 @@ private:
     QVector<int> getLine(LineType line, PlaneType plane);
 
     void rotateCounterClockwise(Direction &dir);
+
     void rotateMiddle(Direction &dir);
+
     friend bool isRow(LineType line);
 public:
     Cube();

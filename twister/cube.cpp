@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 
+
 QVector<QVector<QVector<int> > > Cube::getMatrix() const
 {
     return matrix;
@@ -136,8 +137,6 @@ Cube::Cube(): matrix(6, QVector<QVector<int>>(3, QVector<int>(3)))
         }
     }
 
-//    currentFront = FRONT;
-
 }
 
 
@@ -145,7 +144,7 @@ void Cube::rotate(Direction dir)
 {
     PlaneType plane = dir.getPlane();
     Rotation rot = dir.getRotation();
-
+	
     if (plane < STANDING) {
         for (int i = 0; i < (plane > 2 ? 4 - rot : rot); ++i) {
             rotateMatrix(matrix[plane]);
@@ -158,7 +157,6 @@ void Cube::rotate(Direction dir)
             rotateMiddle(dir);
         }
     }
-
 
 
 }

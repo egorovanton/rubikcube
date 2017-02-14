@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+
     //    cout << (- 2) % 6;
 
 
@@ -80,5 +81,6 @@ int main(int argc, char *argv[])
     cube.rotate("S2");
     cube.rotate("E2");
     cout << cube.print().toStdString() << endl;
+
     return a.exec();
 }

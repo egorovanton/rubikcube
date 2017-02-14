@@ -6,8 +6,6 @@
 //#include <iostream>
 #include <functional>
 
-
-
 template <typename T, template <typename T> class Collection, typename Lambda>
 QString toString(const Collection<T> &collection, const Lambda &show, const QString &sep) {
     QList<QString> result;
@@ -40,6 +38,7 @@ QString vectorToString(const QVector<T> &vector)
 
 template <>
 QString vectorToString(const QVector<int> &vector);
+QString vectorToString(QVector<int> const& vector);
 
 // деление по модулю здорового человека
 template <typename T>
@@ -61,12 +60,14 @@ void rotateHelper(int n, int& x, int& y);
 
 template <typename T>
 void rotateMatrix(QVector<QVector<T>>& matrix) {
+
     //    using std::cout;
     //    using std::endl;
 
     //    cout << "rotateMatrix: " << endl;
     int n = matrix.length();
     //    cout << "n = " << n << endl;
+
     for (int i = 0; i < (n+1)/2; ++i){
         for (int j = 0; j < n/2; ++j) {
             int x0 = j, y0 = i;
@@ -82,6 +83,7 @@ void rotateMatrix(QVector<QVector<T>>& matrix) {
                 //                     << " y1 = " << y1
                 //                     << endl;
 
+
                 std::swap(matrix[y0][x0], matrix[y1][x1]);
                 x0 = x1;
                 y0 = y1;
@@ -90,6 +92,7 @@ void rotateMatrix(QVector<QVector<T>>& matrix) {
         }
     }
     //    cout << "end rotation" << endl;
+
 }
 
 #endif // UTILS_H
