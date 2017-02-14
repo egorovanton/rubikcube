@@ -31,12 +31,17 @@ private:
         {BOTTOM_ROW, RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING}   // down plane
     };
 
+//    PlaneType currentFront;
+
     //CAUTION
     //theese functions reverse newLine/result respectively when needed
     void setLine(LineType line, PlaneType plane, QVector<int> newLine);
     QVector<int> getLine(LineType line, PlaneType plane);
 
     void rotateCounterClockwise(Direction &dir);
+
+    void rotateMiddle(Direction &dir);
+
     friend bool isRow(LineType line);
 public:
     Cube();
@@ -44,6 +49,11 @@ public:
     void rotate(Direction dir);
     void rotate(QString dir);
     void rotate(PlaneType plane, Rotation rotation);
+
+//    void setFront(PlaneType plane);
+    void turnLeft();
+    void turnRight();
+    void turnHalf();
 
 
     QVector<QVector<QVector<int> > > getMatrix() const;

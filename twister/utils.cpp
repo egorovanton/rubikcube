@@ -15,4 +15,3 @@ void rotateHelper(int n, int &x, int &y)  {
     y = x;
     x = n - temp - 1;
 }
-
