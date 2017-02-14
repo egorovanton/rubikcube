@@ -4,6 +4,7 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/generator" />
+      <file path="$PROJECT_DIR$/solver" />
       <file path="$PROJECT_DIR$/twister" />
     </sourceRoots>
   </component>

@@ -3,8 +3,9 @@ project(rubikcube)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_subdirectory(twister)
 add_subdirectory(generator)
+add_subdirectory(twister)
+add_subdirectory(solver)
 #set(SOURCE_FILES )
 
 find_package(Qt5Widgets REQUIRED)
