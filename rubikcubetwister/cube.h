@@ -51,6 +51,8 @@ public:
 
 //    void setFront(PlaneType plane);
     void turnLeft();
+    void turnRight();
+    void turnHalf();
 
 
     QVector<QVector<QVector<int> > > getMatrix() const;

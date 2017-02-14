@@ -29,6 +29,20 @@ void Cube::turnLeft()
     rotate(DOWN, COUNTER_CLOCKWISE);
 }
 
+void Cube::turnRight()
+{
+    rotate(UP, CLOCKWISE);
+    rotate(EQUATOR, CLOCKWISE);
+    rotate(DOWN, CLOCKWISE);
+}
+
+void Cube::turnHalf()
+{
+    rotate(UP, HALF_TURN);
+    rotate(EQUATOR, HALF_TURN);
+    rotate(DOWN, HALF_TURN);
+}
+
 QString Cube::print() {
 
     QList<QString> result;
