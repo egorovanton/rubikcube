@@ -1,7 +1,5 @@
 #include "cube.h"
-#include "direction.h"
 #include "QDebug"
-#include <algorithm>
 #include <iostream>
 
 
@@ -90,7 +88,7 @@ std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plan
                            (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1]);
 }
 
-std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) {
+std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const {
 
     int x1 = getRawLine(RELATION_TABLE[plane1][plane2], plane1)[(static_cast<int>(RELATION_TABLE[plane1][plane3]) - 1) %
                                                                 3];
@@ -173,9 +171,9 @@ void Cube::rotateCounterClockwise(Direction &dir) {
 
 
     PlaneType currentPlane = neighbours[0];
-    PlaneType nextPlane = currentPlane;
+    PlaneType nextPlane;
     LineType currentLine = RELATION_TABLE[currentPlane][plane];
-    LineType nextLine = currentLine;
+    LineType nextLine;
 
     //    if (plane > DOWN) {
 
@@ -229,9 +227,9 @@ void Cube::rotateMiddle(Direction &dir) {
     }
 
     PlaneType currentPlane = neighbours[0];
-    PlaneType nextPlane = currentPlane;
+    PlaneType nextPlane;
     LineType currentLine = lines[0];
-    LineType nextLine = currentLine;
+    LineType nextLine;
 
     for (int i = 0; i < 3; ++i) {
         nextPlane = neighbours[(i + 1) % 4];

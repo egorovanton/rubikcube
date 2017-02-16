@@ -22,17 +22,25 @@ private:
     QStringList result;
     const PlaneType sides[4] = {FRONT, LEFT, BACK, RIGHT};
     void rotate(QString s);
+    void rotate(QStringList q) {
+            for(auto s:q) rotate(s);
+    }
 
     void cross();
-
     bool upPlane(PlaneType currentSide);
     bool downPlane(PlaneType currentSide);
     bool midPlane(PlaneType currentSide);
-
     void dropTopLeft(PlaneType cur);
     void dropTopRight(PlaneType cur);
 
+    void bottomCorners();
+    bool alignBottomCorner(PlaneType f);
+    bool cornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l);
+
+
     QString topTwist(PlaneType from, PlaneType to);
+
+    void makeSeparator();
 };
 
 

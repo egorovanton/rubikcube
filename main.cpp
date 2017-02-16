@@ -24,14 +24,17 @@ int main() {
         QStringList result = solver.solve();
         cout << result.join(" ").toStdString() << endl;
 
-        for (auto q:{FRONT, RIGHT, BACK, LEFT}) {
-            const std::tuple<PlaneType, PlaneType> &tuple = solver.getCube().getCubie(DOWN, q);
-            if (std::get<0>(tuple) != DOWN || std::get<1>(tuple) != q) {
+        for (auto l:{FRONT, RIGHT, BACK, LEFT}) {
+            auto r = getRight(l);
+            auto const &corner = solver.getCube().getCubie(l, DOWN, r);
+            auto const &tuple = solver.getCube().getCubie(DOWN, l);
+            if (std::get<0>(tuple) != DOWN || std::get<1>(tuple) != l
+                || std::get<0>(corner) != l || std::get<1>(corner) != DOWN || std::get<2>(corner) != r) {
                 std::cout << "BROKEN\n" << simpleGen.getSeed() << "\n";
                 std::cout << solver.getCube().print().toStdString();
                 return 1;
             }
-        }
 
+        }
     }
 }
