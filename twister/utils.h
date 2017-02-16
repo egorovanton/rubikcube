@@ -3,28 +3,8 @@
 
 #include <QString>
 #include <QVector>
-//#include <iostream>
 #include <functional>
-
-template <typename T, template <typename T> class Collection, typename Lambda>
-QString toString(const Collection<T> &collection, const Lambda &show, const QString &sep) {
-    QList<QString> result;
-    for (const T& t : collection) {
-        result.append(show(t));
-    }
-    return result.join(sep);
-}
-
-template <typename T, template <typename T> class Collection, typename Lambda>
-QString toString(const Collection<T> &collection, const Lambda &show) {
-    return toString(collection, show, ", ");
-}
-
-template<template <typename> class Collection>
-QString toString(const Collection<int> &collection)
-{
-    return toString(collection, [](int i){return QString::number(i);});
-}
+#include "direction.h"
 
 template <typename T>
 QString vectorToString(const QVector<T> &vector)
@@ -37,8 +17,8 @@ QString vectorToString(const QVector<T> &vector)
 };
 
 template <>
-QString vectorToString(const QVector<int> &vector);
 QString vectorToString(QVector<int> const& vector);
+
 
 // деление по модулю здорового человека
 template <typename T>
@@ -94,5 +74,11 @@ void rotateMatrix(QVector<QVector<T>>& matrix) {
     //    cout << "end rotation" << endl;
 
 }
+
+QString planeToString(PlaneType p);
+//fixme wut?
+PlaneType getLeft(PlaneType p);
+PlaneType getRight(PlaneType p);
+PlaneType getBack(PlaneType p);
 
 #endif // UTILS_H

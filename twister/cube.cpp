@@ -5,8 +5,7 @@
 #include <iostream>
 
 
-QVector<QVector<QVector<int> > > Cube::getMatrix() const
-{
+QVector<QVector<QVector<int> > > Cube::getMatrix() const {
     return matrix;
 }
 
@@ -14,8 +13,7 @@ bool isRow(Cube::LineType line) {
     return line > Cube::NOTHING && line < Cube::LEFT_COLUMN;
 }
 
-QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane)
-{
+QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane) const {
     QVector<int> result = getRawLine(line, plane);
     if (plane > 2) {
         std::reverse(result.begin(), result.end());
@@ -23,28 +21,25 @@ QVector<int> Cube::getLine(Cube::LineType line, PlaneType plane)
     return result;
 }
 
-void Cube::turnLeft()
-{
+void Cube::turnLeft() {
     rotate(UP, CLOCKWISE);
     rotate(EQUATOR, COUNTER_CLOCKWISE);
     rotate(DOWN, COUNTER_CLOCKWISE);
 }
 
-void Cube::turnRight()
-{
+void Cube::turnRight() {
     rotate(UP, COUNTER_CLOCKWISE);
     rotate(EQUATOR, CLOCKWISE);
     rotate(DOWN, CLOCKWISE);
 }
 
-void Cube::turnHalf()
-{
+void Cube::turnHalf() {
     rotate(UP, HALF_TURN);
     rotate(EQUATOR, HALF_TURN);
     rotate(DOWN, HALF_TURN);
 }
 
-QString Cube::print() {
+QString Cube::print() const {
 
     QList<QString> result;
 
@@ -68,8 +63,7 @@ QString Cube::print() {
     return result.join("\n");
 }
 
-QVector<int> Cube::getRawLine(LineType line, PlaneType plane)
-{
+QVector<int> Cube::getRawLine(LineType line, PlaneType plane) const {
     if (line == NOTHING) {
         qWarning("Cube::getRawLine(Cube::LineType, PlaneType)");
         qWarning("\tLineType is NOTHING");
@@ -91,24 +85,24 @@ QVector<int> Cube::getRawLine(LineType line, PlaneType plane)
 
 }
 
-std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2)
-{
+std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2) const {
     return std::make_tuple((PlaneType) getRawLine(RELATION_TABLE[plane1][plane2], plane1)[1],
-            (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1]);
+                           (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1]);
 }
 
-std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3)
-{
+std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) {
 
-    int x1 = getRawLine(RELATION_TABLE[plane1][plane2], plane1)[(static_cast<int>(RELATION_TABLE[plane1][plane3]) - 1) % 3];
-    int x2 = getRawLine(RELATION_TABLE[plane2][plane3], plane2)[(static_cast<int>(RELATION_TABLE[plane2][plane1]) - 1) % 3];
-    int x3 = getRawLine(RELATION_TABLE[plane3][plane1], plane3)[(static_cast<int>(RELATION_TABLE[plane3][plane2]) - 1) % 3];
+    int x1 = getRawLine(RELATION_TABLE[plane1][plane2], plane1)[(static_cast<int>(RELATION_TABLE[plane1][plane3]) - 1) %
+                                                                3];
+    int x2 = getRawLine(RELATION_TABLE[plane2][plane3], plane2)[(static_cast<int>(RELATION_TABLE[plane2][plane1]) - 1) %
+                                                                3];
+    int x3 = getRawLine(RELATION_TABLE[plane3][plane1], plane3)[(static_cast<int>(RELATION_TABLE[plane3][plane2]) - 1) %
+                                                                3];
 
     return std::make_tuple((PlaneType) x1, (PlaneType) x2, (PlaneType) x3);
 }
 
-void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine)
-{
+void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine) {
     if (line == NOTHING) {
         qWarning("Cube::getLine(Cube::LineType, PlaneType)");
         qWarning("\tLineType is NOTHING");
@@ -127,9 +121,8 @@ void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine)
     }
 }
 
-Cube::Cube(): matrix(6, QVector<QVector<int>>(3, QVector<int>(3)))
-{
-    for(int i = 0; i < 6; ++i) {
+Cube::Cube() : matrix(6, QVector<QVector<int>>(3, QVector<int>(3))) {
+    for (int i = 0; i < 6; ++i) {
         for (int j = 0; j < 3; ++j) {
             for (int k = 0; k < 3; ++k) {
                 matrix[i][j][k] = i;
@@ -140,11 +133,10 @@ Cube::Cube(): matrix(6, QVector<QVector<int>>(3, QVector<int>(3)))
 }
 
 
-void Cube::rotate(Direction dir)
-{
+void Cube::rotate(Direction dir) {
     PlaneType plane = dir.getPlane();
     Rotation rot = dir.getRotation();
-	
+
     if (plane < STANDING) {
         for (int i = 0; i < (plane > 2 ? 4 - rot : rot); ++i) {
             rotateMatrix(matrix[plane]);
@@ -161,13 +153,11 @@ void Cube::rotate(Direction dir)
 
 }
 
-void Cube::rotate(QString dir)
-{
+void Cube::rotate(QString dir) {
     rotate(Direction(dir));
 }
 
-void Cube::rotate(PlaneType plane, Rotation rotation)
-{
+void Cube::rotate(PlaneType plane, Rotation rotation) {
     rotate(Direction(plane, rotation));
 }
 
@@ -180,7 +170,6 @@ void Cube::rotate(PlaneType plane, Rotation rotation)
 void Cube::rotateCounterClockwise(Direction &dir) {
     PlaneType plane = dir.getPlane();
     QVector<PlaneType> neighbours = dir.getNeighbours();
-
 
 
     PlaneType currentPlane = neighbours[0];
@@ -220,22 +209,23 @@ void Cube::rotateCounterClockwise(Direction &dir) {
 
 }
 
-void Cube::rotateMiddle(Direction &dir)
-{
+void Cube::rotateMiddle(Direction &dir) {
     PlaneType plane = dir.getPlane();
     QVector<PlaneType> neighbours = dir.getNeighbours();
     QVector<LineType> lines;
 
     switch (plane) {
-    case MIDDLE:
-        lines = {CENTER_COLUMN, CENTER_COLUMN, CENTER_COLUMN, CENTER_COLUMN};
-        break;
-    case STANDING:
-        lines = {CENTER_COLUMN, CENTER_ROW, CENTER_COLUMN, CENTER_ROW};
-        break;
-    case EQUATOR:
-        lines = {CENTER_ROW, CENTER_ROW, CENTER_ROW, CENTER_ROW};
-        break;
+        case MIDDLE:
+            lines = {CENTER_COLUMN, CENTER_COLUMN, CENTER_COLUMN, CENTER_COLUMN};
+            break;
+        case STANDING:
+            lines = {CENTER_COLUMN, CENTER_ROW, CENTER_COLUMN, CENTER_ROW};
+            break;
+        case EQUATOR:
+            lines = {CENTER_ROW, CENTER_ROW, CENTER_ROW, CENTER_ROW};
+            break;
+        default:
+            throw;
     }
 
     PlaneType currentPlane = neighbours[0];

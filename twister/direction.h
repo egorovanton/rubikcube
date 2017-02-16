@@ -21,7 +21,9 @@ enum PlaneType {
 
     STANDING = 6,
     MIDDLE = 7,
-    EQUATOR = 8
+    EQUATOR = 8,
+
+    STUB = -1
 };
 
 class Direction
