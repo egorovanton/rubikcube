@@ -8,12 +8,6 @@
 
 #include "../twister/cube.h"
 
-enum SideFlag {
-    U = 1,
-    MID = 2,
-    D = 3
-};
-
 class Solver {
 public:
     Solver(Cube c): cube(c) {};
@@ -31,7 +25,10 @@ private:
 
     void cross();
 
-    void dropCrossFromTop();
+    bool upPlane(PlaneType currentSide);
+    bool downPlane(PlaneType currentSide);
+    bool midPlane(PlaneType currentSide);
+
     void dropTopLeft(PlaneType cur);
     void dropTopRight(PlaneType cur);
 
