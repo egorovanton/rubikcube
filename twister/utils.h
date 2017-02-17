@@ -5,6 +5,8 @@
 #include <QVector>
 #include <functional>
 #include "direction.h"
+#include <QList>
+#include <string>
 
 template <typename T>
 QString vectorToString(const QVector<T> &vector)
@@ -35,6 +37,14 @@ inline T modulus(T i, T n) {
 //    return result;
 //}
 
+template <typename T, template <typename> class Container, typename Show>
+QString toString(const Container<T>& container, const Show &toString, const QString &sep = " ") {
+    QList<QString> result;
+    for (const T &x : container) {
+        result.append(toString(x));
+    }
+    return result.join(sep);
+};
 
 void rotateHelper(int n, int& x, int& y);
 
@@ -80,5 +90,10 @@ QString planeToString(PlaneType p);
 PlaneType getLeft(PlaneType p);
 PlaneType getRight(PlaneType p);
 PlaneType getBack(PlaneType p);
+
+std::string printTuple(const std::tuple<PlaneType, PlaneType, PlaneType> &t, const std::string &sep = " ");
+
+std::string printTuple(const std::tuple<PlaneType, PlaneType> &t, const std::string &sep = " ");
+
 
 #endif // UTILS_H

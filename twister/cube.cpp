@@ -3,6 +3,7 @@
 #include <iostream>
 
 
+
 QVector<QVector<QVector<int> > > Cube::getMatrix() const {
     return matrix;
 }
@@ -83,9 +84,40 @@ QVector<int> Cube::getRawLine(LineType line, PlaneType plane) const {
 
 }
 
+// some magic is being performed
+void processVector(QVector<int> &vec, int front) {
+    using std::cout;
+    using std::endl;
+    front -= front > 1;
+//    cout << "vector = " << vectorToString(vec).toStdString() << endl;
+    for (int &x : vec) {
+        if ((x + 1) % 3) {
+//            cout << "front = " << front
+//                 << "x = " << x
+//                 << endl;
+//            cout << "front = " << front << endl;
+            int y = modulus(x - (x > 1) - front, 4);
+//            cout << "y = " << y << endl;
+            x = y + (y > 1);
+//            cout << "x = " << x << endl;
+        }
+//        cout << endl;
+    }
+//    cout << endl;
+}
+
 std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2) const {
-    return std::make_tuple((PlaneType) getRawLine(RELATION_TABLE[plane1][plane2], plane1)[1],
-                           (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1]);
+    int x1 = (PlaneType) getRawLine(RELATION_TABLE[plane1][plane2], plane1)[1];
+    int x2 = (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1];
+
+    if (x1 == x2) {
+        qWarning() << "!!!!Cube.getCubie(PlaneType, PlaneType): WTF?";
+    }
+
+    QVector<int> vec = {x1, x2};
+    processVector(vec, getCurrentFront());
+    return std::make_tuple((PlaneType) vec[0], (PlaneType) vec[1]);
+
 }
 
 std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const {
@@ -96,8 +128,9 @@ std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, Pla
                                                                 3];
     int x3 = getRawLine(RELATION_TABLE[plane3][plane1], plane3)[(static_cast<int>(RELATION_TABLE[plane3][plane2]) - 1) %
                                                                 3];
-
-    return std::make_tuple((PlaneType) x1, (PlaneType) x2, (PlaneType) x3);
+    QVector<int> vec = {x1, x2, x3};
+    processVector(vec, getCurrentFront());
+    return std::make_tuple((PlaneType) vec[0], (PlaneType) vec[1], (PlaneType) vec[2]);
 }
 
 void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine) {
@@ -244,4 +277,8 @@ void Cube::rotateMiddle(Direction &dir) {
         currentPlane = nextPlane;
         currentLine = nextLine;
     }
+}
+
+PlaneType Cube::getCurrentFront() const {
+    return (PlaneType) matrix[FRONT][1][1];
 }
