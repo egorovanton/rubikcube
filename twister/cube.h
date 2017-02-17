@@ -31,12 +31,17 @@ private:
         {BOTTOM_ROW, RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING}   // down plane
     };
 
+//    PlaneType currentFront;
+
     //CAUTION
     //theese functions reverse newLine/result respectively when needed
     void setLine(LineType line, PlaneType plane, QVector<int> newLine);
-    QVector<int> getLine(LineType line, PlaneType plane);
+    QVector<int> getLine(LineType line, PlaneType plane) const;
 
     void rotateCounterClockwise(Direction &dir);
+
+    void rotateMiddle(Direction &dir);
+
     friend bool isRow(LineType line);
 public:
     Cube();
@@ -45,15 +50,20 @@ public:
     void rotate(QString dir);
     void rotate(PlaneType plane, Rotation rotation);
 
+//    void setFront(PlaneType plane);
+    void turnLeft();
+    void turnRight();
+    void turnHalf();
+
 
     QVector<QVector<QVector<int> > > getMatrix() const;
-    QString print();
+    QString print() const;
 
     //returns line without without reversing it
-    QVector<int> getRawLine(LineType line, PlaneType plane);
+    QVector<int> getRawLine(LineType line, PlaneType plane) const;
 
-    std::tuple<PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2);
-    std::tuple<PlaneType, PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3);
+    std::tuple<PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2) const;
+    std::tuple<PlaneType, PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const;
 
 
 };

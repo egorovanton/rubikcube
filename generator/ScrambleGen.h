@@ -16,8 +16,12 @@ protected:
     bool checkNextTwist(int currentPosition, int nextPosition);
 
 public:
+    uint seed;
     ScrambleGen();
     QStringList getNewScramble();
+    uint getSeed() {
+        return seed;
+    }
 };
 
 

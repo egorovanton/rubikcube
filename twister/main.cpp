@@ -2,7 +2,6 @@
 #include "direction.h"
 #include <iostream>
 #include "cube.h"
-#include "utils.h"
 #include <QDebug>
 #include <random>
 
@@ -10,8 +9,6 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-
 //    cout << (- 2) % 6;
 
 
@@ -61,7 +58,4 @@ int main(int argc, char *argv[])
         cout << endl << endl;
     }
 
-
-
-    return a.exec();
 }
