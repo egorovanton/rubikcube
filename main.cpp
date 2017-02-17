@@ -13,7 +13,7 @@ int main() {
     ScrambleGen simpleGen;
     while (true) {
         Cube cube;
-        //std::cout << simpleGen.getSeed() << "\n";
+        std::cout << simpleGen.getSeed() << "\n";
         const QStringList &list = simpleGen.getNewScramble();
         cout << list.join(" ").toStdString() << endl;
         for (auto str: list) {
@@ -24,12 +24,17 @@ int main() {
         QStringList result = solver.solve();
         cout << result.join(" ").toStdString() << endl;
 
-        for (auto l:{FRONT, RIGHT, BACK, LEFT}) {
-            auto r = getRight(l);
-            auto const &corner = solver.getCube().getCubie(l, DOWN, r);
-            auto const &tuple = solver.getCube().getCubie(DOWN, l);
-            if (std::get<0>(tuple) != DOWN || std::get<1>(tuple) != l
-                || std::get<0>(corner) != l || std::get<1>(corner) != DOWN || std::get<2>(corner) != r) {
+        for (auto f:{FRONT, RIGHT, BACK, LEFT}) {
+            auto r = getRight(f);
+            //auto l = getLeft(f);
+
+            auto const &corner = solver.getCube().getCubie(f, DOWN, r);
+            auto const &down = solver.getCube().getCubie(DOWN, f);
+            auto const &mid = solver.getCube().getCubie(f, r);
+
+            if (std::get<0>(down) != DOWN || std::get<1>(down) != f
+                || std::get<0>(corner) != f || std::get<1>(corner) != DOWN || std::get<2>(corner) != r
+                    || std::get<0>(mid) != f || std::get<1>(mid) != r ) {
                 std::cout << "BROKEN\n" << simpleGen.getSeed() << "\n";
                 std::cout << solver.getCube().print().toStdString();
                 return 1;

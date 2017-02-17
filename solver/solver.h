@@ -21,10 +21,6 @@ public:
 private:
     QStringList result;
     const PlaneType sides[4] = {FRONT, LEFT, BACK, RIGHT};
-    void rotate(QString s);
-    void rotate(QStringList q) {
-            for(auto s:q) rotate(s);
-    }
 
     void cross();
     bool upPlane(PlaneType currentSide);
@@ -37,10 +33,16 @@ private:
     bool alignBottomCorner(PlaneType f);
     bool cornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l);
 
+    void middleLine();
+    bool nextMiddleCubie();
+
+    void rotate(QString s);
+    void rotate(QStringList q) {
+        for(auto s:q) rotate(s);
+    }
+    void makeSeparator();
 
     QString topTwist(PlaneType from, PlaneType to);
-
-    void makeSeparator();
 };
 
 

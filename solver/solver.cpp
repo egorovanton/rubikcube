@@ -13,8 +13,13 @@ QStringList Solver::solve() {
     //std::cout << "Cross completed\n";
     //std::cout << result.join(" ").toStdString();
     //std::cout << cube.print().toStdString() << "\n";
-
     bottomCorners();
+    //std::cout << "Corners completed\n";
+    //std::cout << result.join(" ").toStdString() << "\n";
+    //std::cout << cube.print().toStdString() << "\n";
+    middleLine();
+    //std::cout << "Middle completed\n";
+
     return result;
 
 }
@@ -190,6 +195,62 @@ bool Solver::cornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneTyp
 }
 
 //***END_OF_BOTTOM_CORNERS_SECTION***
+
+//***MIDDLE_SECTION***
+
+void Solver::middleLine() {
+    int inPlace = 0;
+    for (auto f:sides) {
+        PlaneType r = getRight(f);
+        auto tuple = cube.getCubie(f, r);
+        if (std::get<0>(tuple) == f && std::get<1>(tuple) == r) {
+            inPlace++;
+        }
+    }
+    while (inPlace <= 4) {
+        makeSeparator();
+        if (nextMiddleCubie()) inPlace++;
+    }
+}
+//| F R' F' | L | U' B U B' | U F2 | U2 R U R' | U' L' U' L | U B U2 B' U' B U B'
+//| F' U F U R U' R' | U F U' F' U' L' U L | R U' R' U' B' U B | L U' L' U' B' U B | U R U' R' U' F' U F
+
+bool Solver::nextMiddleCubie() {
+    for (auto currentFront : sides) {
+        auto tuple = cube.getCubie(currentFront, UP);
+        auto &f = std::get<0>(tuple);
+        auto &u = std::get<1>(tuple);
+        if (f != UP && u != UP) {
+            if (u == getRight(f)) {
+                rotate(topTwist(currentFront, getLeft(f)));
+                auto const &F = planeToString(f);
+                auto const &R = planeToString(getRight(f));
+                rotate({R, "U'", R + "'", "U'", F + "'", "U", F});
+            } else if (u == getLeft(f)) {
+                rotate(topTwist(currentFront, getRight(f)));
+                auto const &F = planeToString(getLeft(f));
+                auto const &R = planeToString(f);
+                rotate({F + "'", "U", F, "U", R, "U'", R + "'"});
+            } else throw;
+            return true;
+        }
+    }
+    for (auto currentFront : sides) {
+        auto const &currentRight = getRight(currentFront);
+        auto tuple = cube.getCubie(currentFront, currentRight);
+        auto &f = std::get<0>(tuple);
+        auto &r = std::get<1>(tuple);
+        if (f != currentFront || r != currentRight) {
+            auto const &F = planeToString(currentFront);
+            auto const &R = planeToString(getRight(currentFront));
+            rotate({R, "U'", R + "'", "U'", F + "'", "U", F});
+            return false;
+        }
+    }
+
+    return true;
+}
+//***END_OF_MIDDLE_SECTION***
 
 //***COMMON***
 QString Solver::topTwist(PlaneType from, PlaneType to) {
