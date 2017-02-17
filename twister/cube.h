@@ -30,7 +30,7 @@ private:
         {LEFT_COLUMN, NOTHING, TOP_ROW, RIGHT_COLUMN, NOTHING, BOTTOM_ROW},  // left plane
         {BOTTOM_ROW, RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING}   // down plane
     };
-
+    
 //    PlaneType currentFront;
 
     //CAUTION
@@ -61,6 +61,7 @@ public:
 
     //returns line without without reversing it
     QVector<int> getRawLine(LineType line, PlaneType plane) const;
+    PlaneType getCurrentFront() const;
 
     std::tuple<PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2) const;
     std::tuple<PlaneType, PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const;

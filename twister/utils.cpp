@@ -81,4 +81,26 @@ QString planeToString(PlaneType p) {
     }
 }
 
+std::string printTuple(const std::tuple<PlaneType, PlaneType, PlaneType> &t, const std::string &sep) {
+    using std::get;
+
+    std::string result;
+    result += planeToString(get<0>(t)).toStdString();
+    result += sep;
+    result += planeToString(get<1>(t)).toStdString();
+    result += sep;
+    result += planeToString(get<2>(t)).toStdString();
+    return result;
+}
+
+std::string printTuple(const std::tuple<PlaneType, PlaneType> &t, const std::string &sep) {
+    using std::get;
+
+    std::string result;
+    result += planeToString(get<0>(t)).toStdString();
+    result += sep;
+    result += planeToString(get<1>(t)).toStdString();
+    return result;
+}
+
 

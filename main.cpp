@@ -2,18 +2,22 @@
 #include "generator/ScrambleGen.h"
 #include "twister/cube.h"
 #include "solver/solver.h"
+#include <string>
+#include <tuple>
 
 //
 // Created by alex on 2/4/17.
 //
+
+using namespace std;
+
+
 int main() {
-    using std::cout;
-    using std::endl;
 
     ScrambleGen simpleGen;
     while (true) {
         Cube cube;
-        std::cout << simpleGen.getSeed() << "\n";
+        //std::cout << simpleGen.getSeed() << "\n";
         const QStringList &list = simpleGen.getNewScramble();
         cout << list.join(" ").toStdString() << endl;
         for (auto str: list) {
@@ -23,7 +27,7 @@ int main() {
         Solver solver(cube);
         QStringList result = solver.solve();
         cout << result.join(" ").toStdString() << endl;
-
+        cout << solver.getCube().print().toStdString() << endl;
         for (auto f:{FRONT, RIGHT, BACK, LEFT}) {
             auto r = getRight(f);
             //auto l = getLeft(f);
@@ -39,7 +43,17 @@ int main() {
                 || std::get<0>(mid) != f || std::get<1>(mid) != r
                 || std::get<0>(upp) != f || std::get<1>(upp) != UP
                 || std::get<0>(uCorner) != f || std::get<1>(uCorner) != UP || std::get<2>(uCorner) != r) {
+
                 std::cout << "BROKEN\n" << simpleGen.getSeed() << "\n";
+
+                cout << "r = " << planeToString(r).toStdString() << endl;
+                cout << "f = " << planeToString(f).toStdString() << endl;
+
+                std::cout << "dCorner = " << printTuple(dCorner) << endl;
+                std::cout << "down = " << printTuple(down) << endl;
+                std::cout << "mid = " << printTuple(mid) << endl;
+                std::cout << "upp = " << printTuple(upp) << endl;
+
                 std::cout << solver.getCube().print().toStdString();
                 return 1;
             }

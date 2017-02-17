@@ -397,10 +397,14 @@ void Solver::placeUpperCorners() {
     auto const &br = cube.getCubie(BACK, UP, RIGHT);
     auto const &rf = cube.getCubie(RIGHT, UP, FRONT);
     auto again = false;
+   //std::cout << printTuple(fl) << std::endl;
+   //std::cout << printTuple(lb) << std::endl;
+   //std::cout << printTuple(br) << std::endl;
+   //std::cout << printTuple(rf) << std::endl;
     if (std::get<0>(fl) == FRONT && std::get<2>(fl) == LEFT
         && std::get<0>(lb) == LEFT && std::get<2>(lb) == BACK
         && std::get<0>(br) == BACK && std::get<2>(br) == RIGHT
-        && std::get<0>(br) == RIGHT && std::get<2>(br) == FRONT) {
+        && std::get<0>(rf) == RIGHT && std::get<2>(rf) == FRONT) {
         return;
     } else {
         if (uppCornerMatch(lb, BACK)) {
