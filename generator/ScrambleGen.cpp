@@ -6,7 +6,7 @@
 //
 
 ScrambleGen::ScrambleGen() : twists() {
-    seed = (uint) time(NULL);
+    seed = 1487347187;(uint) time(NULL);
     qsrand(seed);
     twists << "L" << "R" << "U" << "D" << "F" << "B"
            << "L'" << "R'" << "U'" << "D'" << "F'" << "B'"
@@ -23,7 +23,7 @@ QStringList ScrambleGen::getNewScramble() {
     int cur = qrand() % twists.length();
     int next = 0;
     result << twists[cur];
-    for (int i = 1; i < 25; i++) {
+    for (int i = 1; i < 5; i++) {
         while (checkNextTwist(cur, (next = qrand() % twists.length())));
         result << twists[next];
         cur = next;

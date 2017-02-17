@@ -11,15 +11,24 @@ QStringList Solver::solve() {
     cross();
 
     //std::cout << "Cross completed\n";
-    //std::cout << result.join(" ").toStdString();
+    //std::cout << result.join(" ").toStdString() << "\n";
     //std::cout << cube.print().toStdString() << "\n";
     bottomCorners();
-    //std::cout << "Corners completed\n";
+    //std::cout << "Bottom corners completed\n";
     //std::cout << result.join(" ").toStdString() << "\n";
     //std::cout << cube.print().toStdString() << "\n";
     middleLine();
     //std::cout << "Middle completed\n";
-
+    //std::cout << result.join(" ").toStdString() << "\n";
+    //std::cout << cube.print().toStdString() << "\n";
+    upperCross();
+    //std::cout << "Upper cross completed\n";
+    //std::cout << result.join(" ").toStdString() << "\n";
+    //std::cout << cube.print().toStdString() << "\n";
+    upperCorners();
+    //std::cout << "Upper corners completed\n";
+    //std::cout << result.join(" ").toStdString() << "\n";
+    //std::cout << cube.print().toStdString() << "\n";
     return result;
 
 }
@@ -153,29 +162,29 @@ bool Solver::alignBottomCorner(PlaneType f) {
         auto const &b = getBack(f);
         auto const &l = getLeft(f);
 
-        if (cornerMatch(cube.getCubie(f, DOWN, r), f)) {
+        if (downCornerMatch(cube.getCubie(f, DOWN, r), f)) {
             auto const &R = planeToString(r);
             rotate({R, "U'", R + "'"});
-        } else if (cornerMatch(cube.getCubie(r, DOWN, b), f)) {
+        } else if (downCornerMatch(cube.getCubie(r, DOWN, b), f)) {
             auto const &B = planeToString(b);
             rotate({B, "U", B + "'"});
-        } else if (cornerMatch(cube.getCubie(b, DOWN, l), f)) {
+        } else if (downCornerMatch(cube.getCubie(b, DOWN, l), f)) {
             auto const &L = planeToString(l);
             rotate({L, "U2", L + "'"});
-        } else if (cornerMatch(cube.getCubie(l, DOWN, f), f)) {
+        } else if (downCornerMatch(cube.getCubie(l, DOWN, f), f)) {
             auto const &L = planeToString(l);
             rotate({L + "'", "U'", L});
         }
         //***END_DOWN***
 
         //******UP******
-        if (cornerMatch(cube.getCubie(f, UP, r), f)) {
+        if (downCornerMatch(cube.getCubie(f, UP, r), f)) {
 
-        } else if (cornerMatch(cube.getCubie(r, UP, b), f)) {
+        } else if (downCornerMatch(cube.getCubie(r, UP, b), f)) {
             rotate("U");
-        } else if (cornerMatch(cube.getCubie(b, UP, l), f)) {
+        } else if (downCornerMatch(cube.getCubie(b, UP, l), f)) {
             rotate("U2");
-        } else if (cornerMatch(cube.getCubie(l, UP, f), f)) {
+        } else if (downCornerMatch(cube.getCubie(l, UP, f), f)) {
             rotate("U'");
         } else throw; //wutwtwut
         //****END_UP****
@@ -184,7 +193,7 @@ bool Solver::alignBottomCorner(PlaneType f) {
 
 }
 
-bool Solver::cornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l) {
+bool Solver::downCornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l) {
     auto t1 = std::get<0>(t);
     auto t2 = std::get<1>(t);
     auto t3 = std::get<2>(t);
@@ -212,8 +221,6 @@ void Solver::middleLine() {
         if (nextMiddleCubie()) inPlace++;
     }
 }
-//| F R' F' | L | U' B U B' | U F2 | U2 R U R' | U' L' U' L | U B U2 B' U' B U B'
-//| F' U F U R U' R' | U F U' F' U' L' U L | R U' R' U' B' U B | L U' L' U' B' U B | U R U' R' U' F' U F
 
 bool Solver::nextMiddleCubie() {
     for (auto currentFront : sides) {
@@ -251,6 +258,185 @@ bool Solver::nextMiddleCubie() {
     return true;
 }
 //***END_OF_MIDDLE_SECTION***
+
+//***UPPER_CROSS_SECTION***
+
+void Solver::upperOrientation() {
+    auto const &f = std::get<1>(cube.getCubie(FRONT, UP));
+    auto const &l = std::get<1>(cube.getCubie(LEFT, UP));
+    auto const &b = std::get<1>(cube.getCubie(BACK, UP));
+    const QStringList &upper1 = {"F", "R", "U", "R'", "U'", "F'", "B", "U", "L", "U'", "L'", "B'"};
+    const QStringList &upper2 = {"B", "U", "L", "U'", "L'", "B'"};
+    const QStringList &upper3 = {"F", "R", "U", "R'", "U'", "F'"};
+
+    if (f != UP) {
+        if (l != UP) {
+            if (b != UP) {
+                //{1}
+                rotate(upper1);
+            } else {
+                //U {2}
+                rotate("U");
+                rotate(upper2);
+            }
+        } else if (b != UP) {
+            // {3}
+            rotate(upper3);
+        } else {
+            // U2 {2}
+            rotate("U2");
+            rotate(upper2);
+        }
+    } else if (l != UP) {
+        if (b != UP) {
+            //{2}
+            rotate(upper2);
+        } else {
+            // U {3}
+            rotate("U");
+            rotate(upper3);
+        }
+    } else if (b != UP) {
+        //U' {2}
+        rotate("U'");
+        rotate(upper2);
+    } else {
+        // nothing
+    }
+
+}
+
+void Solver::upperOrder() {
+    const QStringList &fish = {"R", "U", "R'", "U", "R", "U2", "R'"};
+    auto const &f = std::get<0>(cube.getCubie(FRONT, UP));
+    auto const &l = std::get<0>(cube.getCubie(LEFT, UP));
+    auto const &b = std::get<0>(cube.getCubie(BACK, UP));
+    auto const &r = std::get<0>(cube.getCubie(RIGHT, UP));
+
+    if (!(f == FRONT && (l == LEFT || b == BACK || r == RIGHT)
+          || (l == LEFT && (b == BACK || r == RIGHT))
+          || (b == BACK && r == RIGHT))) {
+        rotate("U");
+        upperOrder();
+        return;
+    } else if (f == FRONT && l == LEFT && b == BACK) {
+        return;
+    } else {
+        if (f == FRONT) {
+            if (l == LEFT) {
+                //U2 {F} U'
+                rotate("U2");
+                rotate(fish);
+                rotate("U'");
+            } else if (b == BACK) {
+                //U {F} U' {F} U'
+                rotate("U");
+                rotate(fish);
+                rotate("U'");
+                rotate(fish);
+                rotate("U'");
+            } else {
+                //U' {F} U2
+                rotate("U'");
+                rotate(fish);
+                rotate("U2");
+            }
+        } else {
+            if (l == LEFT) {
+                if (b == BACK) {
+                    //U {F}
+                    rotate("U");
+                    rotate(fish);
+                } else {
+                    //{F} U' {F}
+                    rotate(fish);
+                    rotate("U'");
+                    rotate(fish);
+                }
+            } else /*if (b == BACK)*/ {
+                //{F} U
+                rotate(fish);
+                rotate("U");
+            }
+        }
+    }
+}
+
+void Solver::upperCross() {
+    upperOrientation();
+    upperOrder();
+}
+
+//***END_OF_UPPER_CROSS_SECTION***
+
+//***UPPER_CORNERS_SECTION***
+
+void Solver::upperCorners() {
+    flipUpperCorners();
+    //std::cout << "Upper in progress\n";
+    //std::cout << result.join(" ").toStdString() << "\n";
+    //std::cout << cube.print().toStdString() << "\n";
+    placeUpperCorners();
+}
+void Solver::flipUpperCorners() {
+    for (int i = 0; i < 4; i++) {
+        auto const &tuple = cube.getCubie(FRONT, UP, RIGHT);
+        if (std::get<0>(tuple) == UP) {
+            rotate({"R", "F'", "R'", "F", "R", "F'", "R'", "F",});
+        } else if (std::get<2>(tuple) == UP) {
+            // F' R F R' F' R F R'.
+            rotate({"F'", "R", "F", "R'", "F'", "R", "F", "R'"});
+        }
+        rotate("U");
+    }
+}
+
+void Solver::placeUpperCorners() {
+    auto const &fl = cube.getCubie(FRONT, UP, LEFT);
+    auto const &lb = cube.getCubie(LEFT, UP, BACK);
+    auto const &br = cube.getCubie(BACK, UP, RIGHT);
+    auto const &rf = cube.getCubie(RIGHT, UP, FRONT);
+    auto again = false;
+    if (std::get<0>(fl) == FRONT && std::get<2>(fl) == LEFT
+        && std::get<0>(lb) == LEFT && std::get<2>(lb) == BACK
+        && std::get<0>(br) == BACK && std::get<2>(br) == RIGHT
+        && std::get<0>(br) == RIGHT && std::get<2>(br) == FRONT) {
+        return;
+    } else {
+        if (uppCornerMatch(lb, BACK)) {
+        } else if (uppCornerMatch(fl, LEFT)) {
+            result.append("y");
+            cube.turnLeft();
+        } else if (uppCornerMatch(br, RIGHT)) {
+            result.append("y'");
+            cube.turnRight();
+        } else if (uppCornerMatch(rf, FRONT)) {
+            result.append("y2");
+            cube.turnHalf();
+        } else {
+            again = true;
+        }
+        if (uppCornerMatch(cube.getCubie(RIGHT, UP, BACK), LEFT)) {
+            rotate({"F2", "R2", "F", "L", "F'", "R2", "F", "L'", "F"});
+        } else {
+            rotate({"F'", "L", "F'", "R2", "F", "L'", "F'", "R2", "F2"});
+        }
+        if (again) placeUpperCorners();
+    }
+}
+
+bool Solver::uppCornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l) {
+    auto t1 = std::get<0>(t);
+    auto t2 = std::get<1>(t);
+    auto t3 = std::get<2>(t);
+    auto r = getRight(l);
+    return (l == t1 || l == t2 || l == t3)
+           && (r == t1 || r == t2 || r == t3);
+}
+//***END_OF_UPPER_CORNERS_SECTION***
+
+
+
 
 //***COMMON***
 QString Solver::topTwist(PlaneType from, PlaneType to) {

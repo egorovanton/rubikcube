@@ -31,18 +31,29 @@ private:
 
     void bottomCorners();
     bool alignBottomCorner(PlaneType f);
-    bool cornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l);
+    bool downCornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l);
 
     void middleLine();
     bool nextMiddleCubie();
+
+    void upperOrientation();
+    void upperOrder();
+    void upperCross();
 
     void rotate(QString s);
     void rotate(QStringList q) {
         for(auto s:q) rotate(s);
     }
     void makeSeparator();
-
     QString topTwist(PlaneType from, PlaneType to);
+
+    void flipUpperCorners();
+
+    void placeUpperCorners();
+
+    bool uppCornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l);
+
+    void upperCorners();
 };
 
 
