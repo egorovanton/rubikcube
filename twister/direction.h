@@ -43,6 +43,8 @@ public:
 
     Rotation getRotation() const;
     PlaneType getPlane() const;
+
+    QString merge(Direction d);
 };
 
 

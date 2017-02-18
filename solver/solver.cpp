@@ -9,7 +9,6 @@
 QStringList Solver::solve() {
 
     cross();
-
     //std::cout << "Cross completed\n";
     //std::cout << result.join(" ").toStdString() << "\n";
     //std::cout << cube.print().toStdString() << "\n";
@@ -32,6 +31,38 @@ QStringList Solver::solve() {
     return result;
 
 }
+
+QStringList Solver::getPreparedResult() {
+    if (result.isEmpty()) solve();
+    QStringList preparedResult;
+
+    QString temp = "";
+    for (auto s:result) {
+        if (s == "|" || s[0] == "y") {
+            if (!temp.isEmpty())
+                preparedResult << temp;
+            preparedResult << s;
+            temp = "";
+        } else {
+            Direction x(temp);
+            Direction y(s);
+            if (!temp.isEmpty() && !s.isEmpty() && x.getPlane() == y.getPlane()) {
+                std::cout << "merging " << temp.toStdString() << " and " << s.toStdString();
+                temp = x.merge(y);
+                std::cout << ": result = " << temp.toStdString() << "\n";
+            } else {
+                if (!temp.isEmpty())
+                    preparedResult << temp;
+                temp = s;
+            }
+        }
+    }
+    if (!temp.isEmpty())
+        preparedResult << temp;
+
+    return preparedResult;
+}
+
 //***CROSS_SECTION***
 
 void Solver::cross() {
@@ -378,6 +409,7 @@ void Solver::upperCorners() {
     //std::cout << cube.print().toStdString() << "\n";
     placeUpperCorners();
 }
+
 void Solver::flipUpperCorners() {
     for (int i = 0; i < 4; i++) {
         auto const &tuple = cube.getCubie(FRONT, UP, RIGHT);
@@ -397,10 +429,10 @@ void Solver::placeUpperCorners() {
     auto const &br = cube.getCubie(BACK, UP, RIGHT);
     auto const &rf = cube.getCubie(RIGHT, UP, FRONT);
     auto again = false;
-   //std::cout << printTuple(fl) << std::endl;
-   //std::cout << printTuple(lb) << std::endl;
-   //std::cout << printTuple(br) << std::endl;
-   //std::cout << printTuple(rf) << std::endl;
+    //std::cout << printTuple(fl) << std::endl;
+    //std::cout << printTuple(lb) << std::endl;
+    //std::cout << printTuple(br) << std::endl;
+    //std::cout << printTuple(rf) << std::endl;
     if (std::get<0>(fl) == FRONT && std::get<2>(fl) == LEFT
         && std::get<0>(lb) == LEFT && std::get<2>(lb) == BACK
         && std::get<0>(br) == BACK && std::get<2>(br) == RIGHT

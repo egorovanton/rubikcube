@@ -26,11 +26,12 @@ int main() {
         //cout << cube.print().toStdString() << endl;
         Solver solver(cube);
         QStringList result = solver.solve();
+        QStringList prepResult = solver.getPreparedResult();
         cout << result.join(" ").toStdString() << endl;
+        cout << prepResult.join(" ").toStdString() << endl;
         cout << solver.getCube().print().toStdString() << endl;
         for (auto f:{FRONT, RIGHT, BACK, LEFT}) {
             auto r = getRight(f);
-            //auto l = getLeft(f);
 
             auto const &dCorner = solver.getCube().getCubie(f, DOWN, r);
             auto const &down = solver.getCube().getCubie(DOWN, f);
@@ -59,5 +60,6 @@ int main() {
             }
 
         }
+        break;
     }
 }
