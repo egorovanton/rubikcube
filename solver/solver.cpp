@@ -47,9 +47,7 @@ QStringList Solver::getPreparedResult() {
             Direction x(temp);
             Direction y(s);
             if (!temp.isEmpty() && !s.isEmpty() && x.getPlane() == y.getPlane()) {
-                std::cout << "merging " << temp.toStdString() << " and " << s.toStdString();
                 temp = x.merge(y);
-                std::cout << ": result = " << temp.toStdString() << "\n";
             } else {
                 if (!temp.isEmpty())
                     preparedResult << temp;

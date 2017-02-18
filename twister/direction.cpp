@@ -105,6 +105,7 @@ QString Direction::merge(Direction d) {
                     break;
                 case HALF_TURN:
                     result.append("\'");
+
                     break;
                 case CLOCKWISE:
                     result.append("2");
