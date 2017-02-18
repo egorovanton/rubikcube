@@ -34,7 +34,8 @@ RESOURCES += \
 
 DISTFILES += \
     recources/txt/help.txt \
-    recources/txt/welcome.txt
+    recources/txt/welcome.txt \
+    twister/dontreadme.txt
 
 HEADERS += \
     generator/ScrambleGen.h \

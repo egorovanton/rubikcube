@@ -26,3 +26,19 @@ Direction можно создать хоть от строки, хоть от г
 Алсо, можно повернуть кубик влево. Для этого есть таки метод повернуть влево:
     Cube cube;
     cube.turnLeft();
+
+
+Воу воу, я завел алиасы для тьюплов. Cubie из двух PlaneType теперь Duo, а cubie из
+трех PlaneType теперь Triple.
+Воу воу, я сделал класс Mask и добавил кубу метод fitsMask, который возвращает bool.
+В класс Mask можно задавать цвета cubieков парами, а можно сразу целым скопом:
+    Mask m;
+    m.setCubie(Duo{plane1, plane2}, Duo{plane_1, plane_2}); // задает, что между гранями plane1 и plane2
+                                                            // должен быть plane_1, plane_2
+    m.setCubie(Triple{plane1, plane2, plane3}, Triple{plane1, plane2, plane3}); // тож самое, только для угловых cubieков
+
+    m.setCubies(                                                            // тож самое, только сразу целым скопом
+        QVector<Duo>{Duo{BACK, UP},    Duo{UP, LEFT}, Duo{RIGHT, DOWN}},    // вместо QVector может быть любой контейнер
+        QVector<Duo>{Duo{LEFT, FRONT}, Duo{RIGHT, UP}, Duo{LEFT, UP}}       // вместо Duo есессна может быть Triple
+    );
+
