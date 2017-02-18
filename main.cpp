@@ -4,62 +4,102 @@
 #include "solver/solver.h"
 #include <string>
 #include <tuple>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
+#include <QSet>
+#include <QDebug>
 
-//
-// Created by alex on 2/4/17.
-//
+QTextStream& qStdOut() {
+    static QTextStream ts(stdout);
+    return ts;
+}
 
-using namespace std;
+QTextStream& qStdIn() {
+    static QTextStream ts(stdin, QIODevice::ReadOnly);
+    return ts;
+}
 
+void printRecourse(const QString &str) {
+    QFile file(str);
+    if (file.open(QIODevice::ReadOnly)) {
+        qStdOut() << QTextStream(&file).readAll();
+        qStdOut().flush();
+    }
+}
+
+bool valid(const QStringList& list) {
+    for (const QString &str : list) {
+        if (!Direction::validDirecions.contains(str.toUpper())) {
+            qWarning() << "Unknown: " << str;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void printSolution(const QStringList& scramble) {
+    Cube c;
+    c.rotate(scramble);
+    Solver solver(c);
+    qStdOut() << solver.getPreparedResult().join(" ") << "\n";
+}
 
 int main() {
+    printRecourse(":txt/welcome");
 
-    ScrambleGen simpleGen;
+    ScrambleGen scrambler;
+    QStringList lastScramble;
     while (true) {
-        Cube cube;
-        //std::cout << simpleGen.getSeed() << "\n";
-        const QStringList &list = simpleGen.getNewScramble();
-        cout << list.join(" ").toStdString() << endl;
-        for (auto str: list) {
-            cube.rotate(str);
+        qStdOut().flush();
+
+        QStringList input = qStdIn().readLine().split(QRegExp("\\s"), QString::SkipEmptyParts);
+
+        if (input.length() == 0) {
+            continue;
         }
-        //cout << cube.print().toStdString() << endl;
-        Solver solver(cube);
-        QStringList result = solver.solve();
-        QStringList prepResult = solver.getPreparedResult();
-        cout << result.join(" ").toStdString() << endl;
-        cout << prepResult.join(" ").toStdString() << endl;
-        cout << solver.getCube().print().toStdString() << endl;
-        for (auto f:{FRONT, RIGHT, BACK, LEFT}) {
-            auto r = getRight(f);
 
-            auto const &dCorner = solver.getCube().getCubie(f, DOWN, r);
-            auto const &down = solver.getCube().getCubie(DOWN, f);
-            auto const &mid = solver.getCube().getCubie(f, r);
-            auto const &upp = solver.getCube().getCubie(f, UP);
-            auto const &uCorner = solver.getCube().getCubie(f, UP, r);
+        if (input[0] == "help" || input[0] == "?") {
+            printRecourse(":/txt/help");
+            continue;
+        }
 
-            if (std::get<0>(down) != DOWN || std::get<1>(down) != f
-                || std::get<0>(dCorner) != f || std::get<1>(dCorner) != DOWN || std::get<2>(dCorner) != r
-                || std::get<0>(mid) != f || std::get<1>(mid) != r
-                || std::get<0>(upp) != f || std::get<1>(upp) != UP
-                || std::get<0>(uCorner) != f || std::get<1>(uCorner) != UP || std::get<2>(uCorner) != r) {
+        if (input[0] == "exit") {
+            break;
+        }
 
-                std::cout << "BROKEN\n" << simpleGen.getSeed() << "\n";
+        if (input[0] == "scramble") {
+            lastScramble = scrambler.getNewScramble();
+            qStdOut() << lastScramble.join(" ") << "\n";
+            continue;
+        }
 
-                cout << "r = " << planeToString(r).toStdString() << endl;
-                cout << "f = " << planeToString(f).toStdString() << endl;
-
-                std::cout << "dCorner = " << printTuple(dCorner) << endl;
-                std::cout << "down = " << printTuple(down) << endl;
-                std::cout << "mid = " << printTuple(mid) << endl;
-                std::cout << "upp = " << printTuple(upp) << endl;
-
-                std::cout << solver.getCube().print().toStdString();
-                return 1;
+        if (input[0] == "solve")  {
+            if (input.length() == 1) {
+                qStdOut() << "input scramble to solve (type help solve for more infomation)\n";
+                continue;
             }
 
+            input.removeFirst();
+            if (input[0] == "it") {
+                if (lastScramble.isEmpty()){
+                    qStdOut() << "no scramble was generated\n";
+                } else {
+                    printSolution(lastScramble);
+                }
+            }  else {
+                if (valid(input)) {
+                    printSolution(input);
+                } else {
+                  qStdOut() << "invalid scramble\n";
+                  qStdOut() << "valid scrambles are any combination of : \n";
+                  qStdOut() << ScrambleGen::twists.join(" ") << "\n";
+                }
+            }
+            continue;
         }
-        break;
+        qStdOut() << "Unknown command: " << input[0] << "\n";
+
     }
 }

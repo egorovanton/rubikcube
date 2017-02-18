@@ -12,10 +12,10 @@
 
 class ScrambleGen {
 protected:
-    QVector<QString> twists;
     bool checkNextTwist(int currentPosition, int nextPosition);
 
 public:
+    static const QStringList twists;
     uint seed;
     ScrambleGen();
     QStringList getNewScramble();

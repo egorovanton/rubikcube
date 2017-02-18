@@ -164,9 +164,28 @@ Cube::Cube() : matrix(6, QVector<QVector<int>>(3, QVector<int>(3))) {
 }
 
 
-void Cube::rotate(Direction dir) {
+bool Cube::rotate(Direction dir) {
+    if (dir.getPlane() == STUB) {
+        return false;
+    }
+
     PlaneType plane = dir.getPlane();
     Rotation rot = dir.getRotation();
+
+    if (plane == WHOLE_Y) {
+        switch (dir.getRotation()) {
+        case CLOCKWISE:
+            turnLeft();
+            break;
+        case COUNTER_CLOCKWISE:
+            turnRight();
+            break;
+        default:
+            turnHalf();
+            break;
+        }
+        return true;
+    }
 
     if (plane < STANDING) {
         for (int i = 0; i < (plane > 2 ? 4 - rot : rot); ++i) {
@@ -181,15 +200,24 @@ void Cube::rotate(Direction dir) {
         }
     }
 
-
+    return true;
 }
 
-void Cube::rotate(QString dir) {
-    rotate(Direction(dir));
+bool Cube::rotate(QString dir) {
+    return rotate(Direction(dir));
 }
 
-void Cube::rotate(PlaneType plane, Rotation rotation) {
-    rotate(Direction(plane, rotation));
+bool Cube::rotate(PlaneType plane, Rotation rotation) {
+    return rotate(Direction(plane, rotation));
+}
+
+bool Cube::rotate(QStringList dirs) {
+    for(const QString &dir : dirs) {
+        if(!rotate(dir)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 //void Cube::setFront(PlaneType plane)

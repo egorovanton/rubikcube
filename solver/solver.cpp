@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+Solver::Solver(Cube c): cube(c) {}
+
 QStringList Solver::solve() {
 
     cross();
@@ -294,9 +296,9 @@ void Solver::upperOrientation() {
     auto const &f = std::get<1>(cube.getCubie(FRONT, UP));
     auto const &l = std::get<1>(cube.getCubie(LEFT, UP));
     auto const &b = std::get<1>(cube.getCubie(BACK, UP));
-    const QStringList &upper1 = {"F", "R", "U", "R'", "U'", "F'", "B", "U", "L", "U'", "L'", "B'"};
-    const QStringList &upper2 = {"B", "U", "L", "U'", "L'", "B'"};
-    const QStringList &upper3 = {"F", "R", "U", "R'", "U'", "F'"};
+    static const QStringList &upper1 = {"F", "R", "U", "R'", "U'", "F'", "B", "U", "L", "U'", "L'", "B'"};
+    static const QStringList &upper2 = {"B", "U", "L", "U'", "L'", "B'"};
+    static const QStringList &upper3 = {"F", "R", "U", "R'", "U'", "F'"};
 
     if (f != UP) {
         if (l != UP) {
@@ -336,7 +338,7 @@ void Solver::upperOrientation() {
 }
 
 void Solver::upperOrder() {
-    const QStringList &fish = {"R", "U", "R'", "U", "R", "U2", "R'"};
+    static const QStringList &fish = {"R", "U", "R'", "U", "R", "U2", "R'"};
     auto const &f = std::get<0>(cube.getCubie(FRONT, UP));
     auto const &l = std::get<0>(cube.getCubie(LEFT, UP));
     auto const &b = std::get<0>(cube.getCubie(BACK, UP));

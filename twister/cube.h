@@ -31,7 +31,7 @@ private:
         {BOTTOM_ROW, RIGHT_COLUMN, NOTHING, TOP_ROW, LEFT_COLUMN, NOTHING}   // down plane
     };
     
-//    PlaneType currentFront;
+    //    PlaneType currentFront;
 
     //CAUTION
     //theese functions reverse newLine/result respectively when needed
@@ -46,11 +46,13 @@ private:
 public:
     Cube();
 
-    void rotate(Direction dir);
-    void rotate(QString dir);
-    void rotate(PlaneType plane, Rotation rotation);
+    bool rotate(Direction dir);
+    bool rotate(QString dir);
+    bool rotate(PlaneType plane, Rotation rotation);
 
-//    void setFront(PlaneType plane);
+    bool rotate(QStringList dirs);
+
+    //    void setFront(PlaneType plane);
     void turnLeft();
     void turnRight();
     void turnHalf();
@@ -65,8 +67,6 @@ public:
 
     std::tuple<PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2) const;
     std::tuple<PlaneType, PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const;
-
-
 };
 
 #endif // CUBE_H

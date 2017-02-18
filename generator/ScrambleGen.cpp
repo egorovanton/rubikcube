@@ -1,16 +1,20 @@
 #include <iostream>
+#include <ctime>
 #include "ScrambleGen.h"
 
 //
 // Created by alex on 2/4/17.
 //
 
-ScrambleGen::ScrambleGen() : twists() {
+const QStringList ScrambleGen::twists = {
+    "L",  "R",  "U",  "D",  "F",  "B",
+    "L'", "R'", "U'", "D'", "F'", "B'",
+    "L2", "R2", "U2", "D2", "F2", "B2"
+};
+
+ScrambleGen::ScrambleGen() {
     seed = (uint) time(NULL);
     qsrand(seed);
-    twists << "L" << "R" << "U" << "D" << "F" << "B"
-           << "L'" << "R'" << "U'" << "D'" << "F'" << "B'"
-           << "L2" << "R2" << "U2" << "D2" << "F2" << "B2";
 }
 
 

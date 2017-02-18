@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/txt">
+        <file alias="welcome">recources/txt/welcome.txt</file>
+        <file alias="help">recources/txt/help.txt</file>
+    </qresource>
+
+</RCC>

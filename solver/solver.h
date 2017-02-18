@@ -10,15 +10,15 @@
 
 class Solver {
 public:
-    Solver(Cube c): cube(c) {};
+    Solver(Cube c);
     QStringList solve();
-    QStringList getPreparedResult();
 
 private:
     Cube cube;
 public:
     const Cube &getCube() const;
 
+    QStringList getPreparedResult();
 private:
     QStringList result;
     const PlaneType sides[4] = {FRONT, LEFT, BACK, RIGHT};
@@ -55,7 +55,6 @@ private:
     bool uppCornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, PlaneType l);
 
     void upperCorners();
-
 };
 
 

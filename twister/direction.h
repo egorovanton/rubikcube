@@ -2,6 +2,7 @@
 #define DIRECTION_H
 
 #include <QString>
+#include <QSet>
 #include <QVector>
 
 
@@ -23,6 +24,10 @@ enum PlaneType {
     MIDDLE = 7,
     EQUATOR = 8,
 
+//    WHOLE_X  = 9,
+    WHOLE_Y = 10,
+//    WHOLE_Z = 11,
+
     STUB = -1
 };
 
@@ -35,6 +40,8 @@ private:
     QVector<PlaneType> neighbours;
 
 public:
+    static const QSet<QString> validDirecions;
+
     Direction(QString str);
     Direction(PlaneType p, Rotation r);
 
