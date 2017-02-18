@@ -5,6 +5,7 @@
 #include <tuple>
 #include "direction.h"
 #include "utils.h"
+#include "mask.h"
 
 class Cube
 {
@@ -43,6 +44,29 @@ private:
     void rotateMiddle(Direction &dir);
 
     friend bool isRow(LineType line);
+
+    template <typename K, typename V>
+    bool fitsCubies(const QMap<K, V> &cubies) const {
+        for (const K &key : cubies.keys()) {
+            if (cubies[key] != getCubie(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    template <typename K, typename V>
+    bool fitsCubiesRelatively(const QMap<K, V> &cubies) const {
+        for (const K &key : cubies.keys()) {
+            if (cubies[key] != getCubie(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 public:
     Cube();
 
@@ -65,8 +89,13 @@ public:
     QVector<int> getRawLine(LineType line, PlaneType plane) const;
     PlaneType getCurrentFront() const;
 
-    std::tuple<PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2) const;
-    std::tuple<PlaneType, PlaneType, PlaneType> getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const;
+    Duo getCubie(PlaneType plane1, PlaneType plane2) const;
+    Duo getCubie(const Duo &planes) const;
+    Triple getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const;
+    Triple getCubie(const Triple &planes) const;
+
+    bool fitsMask(const Mask &mask) const;
+    bool fitsMaskRelatively(const Mask &mask) const;
 };
 
 #endif // CUBE_H
