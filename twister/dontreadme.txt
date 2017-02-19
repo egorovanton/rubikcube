@@ -42,3 +42,11 @@ Direction можно создать хоть от строки, хоть от г
         QVector<Duo>{Duo{LEFT, FRONT}, Duo{RIGHT, UP}, Duo{LEFT, UP}}       // вместо Duo есессна может быть Triple
     );
 
+    m.setCubies(                                           // цвета можно назначать и центральным cubieкам
+        QVector<PlaneType>{UP, BACK}
+        QVector<PlaneType>{BACK, UP}
+    );
+
+
+Добавил в класс Cube метод fitsMaskRelatively. Когда сделал, понял что не нужно. 
+Даже не тестил. Можешь пользоваться, а можешь и нет.
