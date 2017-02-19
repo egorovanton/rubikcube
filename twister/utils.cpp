@@ -116,5 +116,5 @@ QVector<PlaneType> toVector(const Duo &d) {
 
 QVector<PlaneType> toVector(const Triple &t) {
     using std::get;
-    return {get<0>(d), get<1>(d), get<2>(d)};
+    return {get<0>(t), get<1>(t), get<2>(t)};
 }

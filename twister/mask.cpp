@@ -10,9 +10,14 @@ QMap<Triple, Triple> Mask::getTriples() const
     return triples;
 }
 
+QMap<PlaneType, PlaneType> Mask::getCentroids() const
+{
+    return centroids;
+}
+
 Mask::Mask()
 {
-
+    
 }
 
 void Mask::setCubie(const PlaneType coord, const PlaneType color) {

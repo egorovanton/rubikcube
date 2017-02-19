@@ -334,5 +334,5 @@ PlaneType Cube::getCurrentFront() const {
 }
 
 PlaneType Cube::getCubie(PlaneType plane) const {
-    return matrix[plane][1][1];
+    return static_cast<PlaneType>(matrix[plane][1][1]);
 }

@@ -6,8 +6,6 @@
 #include <QVector>
 
 
-using Duo    = std::tuple<PlaneType, PlaneType>;
-using Triple = std::tuple<PlaneType, PlaneType, PlaneType>;
 
 enum Rotation {
     COUNTER_CLOCKWISE = 1,
@@ -33,6 +31,9 @@ enum PlaneType {
 
     STUB = -1
 };
+
+using Duo    = std::tuple<PlaneType, PlaneType>;
+using Triple = std::tuple<PlaneType, PlaneType, PlaneType>;
 
 class Direction
 {

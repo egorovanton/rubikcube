@@ -62,8 +62,8 @@ private:
         for (const T &key : cubies.keys()) {
             QVector<PlaneType> keyColors = toVector(key);
             QVector<PlaneType> cubieColors = toVector(cubies[key]);
-            auto ki = toVector(key).begin();
-            auto ci = toVector(currentCubie).begin();
+            auto ki = keyColors.begin();
+            auto ci = cubieColors.begin();
             for (; ki != keyColors.end() && ci != cubieColors.end(); ++ki, ++ci) {
                 if (mappedColors.contains(*ki)) {
                     if (mappedColors[*ki] != *ci) {

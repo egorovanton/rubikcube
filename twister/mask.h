@@ -4,9 +4,6 @@
 #include <QMap>
 #include "direction.h"
 
-using Duo    = std::tuple<PlaneType, PlaneType>;
-using Triple = std::tuple<PlaneType, PlaneType, PlaneType>;
-
 class Mask
 {
 private:
