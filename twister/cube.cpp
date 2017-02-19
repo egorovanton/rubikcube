@@ -144,11 +144,15 @@ Triple Cube::getCubie(const Triple &planes) const {
 }
 
 bool Cube::fitsMask(const Mask &mask) const {
-    return fitsCubies(mask.getDuos()) && fitsCubies(mask.getTriples());
+    return fitsCubies(mask.getCentroids()) &&
+           fitsCubies(mask.getDuos()) &&
+           fitsCubies(mask.getTriples());
 }
 
 bool Cube::fitsMaskRelatively(const Mask &mask) const {
-    return fitsCubiesRelatively(mask.getDuos()) && fitsCubiesRelatively(mask.getTriples());
+    return fitsCubiesRelatively(mask.getCentroids()) &&
+           fitsCubiesRelatively(mask.getDuos()) &&
+           fitsCubiesRelatively(mask.getTriples());
 }
 
 void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine) {
@@ -327,4 +331,8 @@ void Cube::rotateMiddle(Direction &dir) {
 
 PlaneType Cube::getCurrentFront() const {
     return (PlaneType) matrix[FRONT][1][1];
+}
+
+PlaneType Cube::getCubie(PlaneType plane) const {
+    return matrix[plane][1][1];
 }

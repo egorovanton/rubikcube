@@ -104,3 +104,17 @@ std::string printTuple(const std::tuple<PlaneType, PlaneType> &t, const std::str
 }
 
 
+
+QVector<PlaneType> toVector(const PlaneType p) {
+    return {p};
+}
+
+QVector<PlaneType> toVector(const Duo &d) {
+    using std::get;
+    return {get<0>(d), get<1>(d)};
+}
+
+QVector<PlaneType> toVector(const Triple &t) {
+    using std::get;
+    return {get<0>(d), get<1>(d), get<2>(d)};
+}

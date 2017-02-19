@@ -55,11 +55,23 @@ private:
         return true;
     }
 
-    template <typename K, typename V>
-    bool fitsCubiesRelatively(const QMap<K, V> &cubies) const {
-        for (const K &key : cubies.keys()) {
-            if (cubies[key] != getCubie(key)) {
-                return false;
+
+    template <typename T>
+    bool fitsCubiesRelatively(const QMap<T, T> &cubies) const {
+        QMap<PlaneType, PlaneType> mappedColors;
+        for (const T &key : cubies.keys()) {
+            QVector<PlaneType> keyColors = toVector(key);
+            QVector<PlaneType> cubieColors = toVector(cubies[key]);
+            auto ki = toVector(key).begin();
+            auto ci = toVector(currentCubie).begin();
+            for (; ki != keyColors.end() && ci != cubieColors.end(); ++ki, ++ci) {
+                if (mappedColors.contains(*ki)) {
+                    if (mappedColors[*ki] != *ci) {
+                        return false;
+                    }
+                } else {
+                    mappedColors[*ki] = *ci;
+                }
             }
         }
         return true;
@@ -89,6 +101,7 @@ public:
     QVector<int> getRawLine(LineType line, PlaneType plane) const;
     PlaneType getCurrentFront() const;
 
+    PlaneType getCubie(PlaneType plane) const;
     Duo getCubie(PlaneType plane1, PlaneType plane2) const;
     Duo getCubie(const Duo &planes) const;
     Triple getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const;

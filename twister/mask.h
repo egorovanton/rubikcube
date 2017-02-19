@@ -10,17 +10,21 @@ using Triple = std::tuple<PlaneType, PlaneType, PlaneType>;
 class Mask
 {
 private:
+    QMap<PlaneType, PlaneType> centroids;
     QMap<Duo, Duo>duos;
     QMap<Triple, Triple>triples;
 
 public:
     Mask();
+    void setCubie(const PlaneType coord, const PlaneType color);
     void setCubie(const Duo &coord, const Duo &color);
     void setCubie(const Triple &coord, const Triple &color);
 
-    Duo getCubie(const Duo &coord);
-    Triple getCubie(const Triple &coord);
+    PlaneType getCubie(const PlaneType coord) const;
+    Duo getCubie(const Duo &coord) const;
+    Triple getCubie(const Triple &coord) const;
 
+    void eraseCubie(const PlaneType coord);
     void eraseCubie(const Duo &coord);
     void eraseCubie(const Triple &coord);
 
@@ -40,6 +44,7 @@ public:
         }
     }
 
+    QMap<PlaneType, PlaneType> getCentroids() const;
     QMap<Duo, Duo> getDuos() const;
     QMap<Triple, Triple> getTriples() const;
 };

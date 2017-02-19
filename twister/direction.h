@@ -6,6 +6,9 @@
 #include <QVector>
 
 
+using Duo    = std::tuple<PlaneType, PlaneType>;
+using Triple = std::tuple<PlaneType, PlaneType, PlaneType>;
+
 enum Rotation {
     COUNTER_CLOCKWISE = 1,
     HALF_TURN = 2,
