@@ -1,5 +1,4 @@
-help [<command>]       displays this list of commands
-                                displays information about the given command
+help                            displays this list of commands
 exit                            exit
 scramble                        generates new scramble
 solve it                        solves previously generated scramble
