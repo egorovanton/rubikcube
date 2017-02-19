@@ -15,7 +15,8 @@ SOURCES += \
     solver/solver.cpp \
     twister/cube.cpp \
     twister/direction.cpp \
-    twister/utils.cpp
+    twister/utils.cpp \
+    twister/mask.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -33,7 +34,8 @@ RESOURCES += \
 
 DISTFILES += \
     recources/txt/help.txt \
-    recources/txt/welcome.txt
+    recources/txt/welcome.txt \
+    twister/dontreadme.txt
 
 HEADERS += \
     generator/ScrambleGen.h \
@@ -41,6 +43,7 @@ HEADERS += \
     twister/cube.h \
     twister/direction.h \
     twister/utils.h \
-    twister/utils_implementation.h
+    twister/utils_implementation.h \
+    twister/mask.h
 
 

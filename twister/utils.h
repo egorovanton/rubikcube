@@ -95,5 +95,8 @@ std::string printTuple(const std::tuple<PlaneType, PlaneType, PlaneType> &t, con
 
 std::string printTuple(const std::tuple<PlaneType, PlaneType> &t, const std::string &sep = " ");
 
+QVector<PlaneType> toVector(const PlaneType p);
+QVector<PlaneType> toVector(const Duo &d);
+QVector<PlaneType> toVector(const Triple &t);
 
 #endif // UTILS_H

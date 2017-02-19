@@ -1,6 +1,5 @@
 #include "cube.h"
 #include "QDebug"
-#include <iostream>
 
 
 
@@ -86,8 +85,8 @@ QVector<int> Cube::getRawLine(LineType line, PlaneType plane) const {
 
 // some magic is being performed
 void processVector(QVector<int> &vec, int front) {
-    using std::cout;
-    using std::endl;
+    //using std::cout;
+    //using std::endl;
     front -= front > 1;
 //    cout << "vector = " << vectorToString(vec).toStdString() << endl;
     for (int &x : vec) {
@@ -106,7 +105,7 @@ void processVector(QVector<int> &vec, int front) {
 //    cout << endl;
 }
 
-std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2) const {
+Duo Cube::getCubie(PlaneType plane1, PlaneType plane2) const {
     int x1 = (PlaneType) getRawLine(RELATION_TABLE[plane1][plane2], plane1)[1];
     int x2 = (PlaneType) getRawLine(RELATION_TABLE[plane2][plane1], plane2)[1];
 
@@ -116,11 +115,16 @@ std::tuple<PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plan
 
     QVector<int> vec = {x1, x2};
     processVector(vec, getCurrentFront());
-    return std::make_tuple((PlaneType) vec[0], (PlaneType) vec[1]);
 
+    return std::make_tuple((PlaneType) vec[0], (PlaneType) vec[1]);
 }
 
-std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const {
+Duo Cube::getCubie(const Duo &planes) const {
+    using std::get;
+    return getCubie(get<0>(planes), get<1>(planes));
+}
+
+Triple Cube::getCubie(PlaneType plane1, PlaneType plane2, PlaneType plane3) const {
 
     int x1 = getRawLine(RELATION_TABLE[plane1][plane2], plane1)[(static_cast<int>(RELATION_TABLE[plane1][plane3]) - 1) %
                                                                 3];
@@ -130,7 +134,25 @@ std::tuple<PlaneType, PlaneType, PlaneType> Cube::getCubie(PlaneType plane1, Pla
                                                                 3];
     QVector<int> vec = {x1, x2, x3};
     processVector(vec, getCurrentFront());
+
     return std::make_tuple((PlaneType) vec[0], (PlaneType) vec[1], (PlaneType) vec[2]);
+}
+
+Triple Cube::getCubie(const Triple &planes) const {
+    using std::get;
+    return getCubie(get<0>(planes), get<1>(planes), get<2>(planes));
+}
+
+bool Cube::fitsMask(const Mask &mask) const {
+    return fitsCubies(mask.getCentroids()) &&
+           fitsCubies(mask.getDuos()) &&
+           fitsCubies(mask.getTriples());
+}
+
+bool Cube::fitsMaskRelatively(const Mask &mask) const {
+    return fitsCubiesRelatively(mask.getCentroids()) &&
+           fitsCubiesRelatively(mask.getDuos()) &&
+           fitsCubiesRelatively(mask.getTriples());
 }
 
 void Cube::setLine(Cube::LineType line, PlaneType plane, QVector<int> newLine) {
@@ -309,4 +331,8 @@ void Cube::rotateMiddle(Direction &dir) {
 
 PlaneType Cube::getCurrentFront() const {
     return (PlaneType) matrix[FRONT][1][1];
+}
+
+PlaneType Cube::getCubie(PlaneType plane) const {
+    return static_cast<PlaneType>(matrix[plane][1][1]);
 }
