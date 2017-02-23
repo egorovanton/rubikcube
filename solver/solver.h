@@ -23,13 +23,21 @@ public:
 
     QStringList solveF2L();
 
-    QStringList getPreparedResultF2L();
-
     const Cube &getCube() const;
 
-    QStringList getPreparedResult();
+    QStringList getPreparedResult() {
+        if (result.isEmpty()) solve();
+        QStringList preparedResult;
+        return prep();
+    }
+
+    QStringList getPreparedResultF2L() {
+        if (result.isEmpty()) solveF2L();
+        return prep();
+    }
 
 private:
+    QStringList prep();
     Cube cube;
     QStringList result;
     const PlaneType sides[4] = {FRONT, LEFT, BACK, RIGHT};
@@ -129,7 +137,7 @@ private:
             {R,    U, F},
             {B,    U, R},
             {F,    U, L},
-            {F,    U, B},
+            {L,    U, B},
             {R,    F, DOWN},
             {DOWN, R, F},
             {F, DOWN, R}

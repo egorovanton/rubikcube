@@ -15,29 +15,38 @@ using namespace std;
 int main() {
 
     ScrambleGen simpleGen;
-    while (true) {
+    std::cout << simpleGen.getSeed() << "\n";
+
+    int i = 0;
+    int dif = 0;
+    int x = 1'000'000;
+
+    while (++i < x) {
         Cube cube;
-        //std::cout << simpleGen.getSeed() << "\n";
         const QStringList &list = simpleGen.getNewScramble();
-        cout << list.join(" ").toStdString() << endl;
+        //cout << /*list.join(" ").toStdString() <<*/ endl;
         for (auto str: list) {
             cube.rotate(str);
         }
         //cout << cube.print().toStdString() << endl;
-        Solver solver(cube);
-        QStringList result = solver.solveF2L();
-        QStringList prepResult = solver.getPreparedResult();
-        cout << result.join(" ").toStdString() << endl;
-        cout << prepResult.join(" ").toStdString() << endl;
-        cout << solver.getCube().print().toStdString() << endl;
+        Solver solverN(cube);
+        Solver solverF2L(cube);
+
+        auto F2Lres = solverF2L.getPreparedResultF2L();
+        auto Nres = solverN.getPreparedResult();
+        dif += Nres.length() - F2Lres.length();
+
+        //cout << Nres.join(" ").toStdString() << endl;
+        //cout << F2Lres.join(" ").toStdString() << endl;
+
         for (auto f:{FRONT, RIGHT, BACK, LEFT}) {
             auto r = getRight(f);
 
-            auto const &dCorner = solver.getCube().getCubie(f, DOWN, r);
-            auto const &down = solver.getCube().getCubie(DOWN, f);
-            auto const &mid = solver.getCube().getCubie(f, r);
-            auto const &upp = solver.getCube().getCubie(f, UP);
-            auto const &uCorner = solver.getCube().getCubie(f, UP, r);
+            auto const &dCorner = solverF2L.getCube().getCubie(f, DOWN, r);
+            auto const &down = solverF2L.getCube().getCubie(DOWN, f);
+            auto const &mid = solverF2L.getCube().getCubie(f, r);
+            auto const &upp = solverF2L.getCube().getCubie(f, UP);
+            auto const &uCorner = solverF2L.getCube().getCubie(f, UP, r);
 
             if (std::get<0>(down) != DOWN || std::get<1>(down) != f
                 || std::get<0>(dCorner) != f || std::get<1>(dCorner) != DOWN || std::get<2>(dCorner) != r
@@ -55,12 +64,13 @@ int main() {
                 std::cout << "mid = " << printTuple(mid) << endl;
                 std::cout << "upp = " << printTuple(upp) << endl;
 
-                std::cout << solver.getCube().print().toStdString();
+                std::cout << solverF2L.getCube().print().toStdString();
                 return 1;
             }
 
         }
         string q;
-        std::cin >> q;
+        //std::cin >> q;
     }
+    cout << dif/x;
 }

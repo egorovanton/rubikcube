@@ -41,36 +41,6 @@ QStringList Solver::solve() {
 
 }
 
-QStringList Solver::getPreparedResult() {
-    if (result.isEmpty()) solve();
-    QStringList preparedResult;
-
-    QString temp = "";
-    for (auto s:result) {
-        if (s == "|") {
-            if (!temp.isEmpty())
-                preparedResult << temp;
-            preparedResult << s;
-            temp = "";
-        } else {
-            Direction x(temp);
-            Direction y(s);
-            if (!temp.isEmpty() && !s.isEmpty() && x.getPlane() == y.getPlane()) {
-                temp = x.merge(y);
-            } else {
-                if (!temp.isEmpty())
-                    preparedResult << temp;
-                temp = s;
-            }
-        }
-    }
-    if (!temp.isEmpty())
-        preparedResult << temp;
-
-    return preparedResult;
-}
-
-
 QStringList Solver::solveF2L() {
     cross();
     //std::cout << "Cross completed\n";
@@ -118,34 +88,34 @@ QStringList Solver::solveF2L() {
     return result;
 }
 
-
-QStringList Solver::getPreparedResultF2L() {
-    if (result.isEmpty()) solveF2L();
-    QStringList preparedResult;
-
-    QString temp = "";
-    for (auto s:result) {
-        if (s == "|") {
-            if (!temp.isEmpty())
-                preparedResult << temp;
-            preparedResult << s;
-            temp = "";
-        } else {
-            Direction x(temp);
-            Direction y(s);
-            if (!temp.isEmpty() && !s.isEmpty() && x.getPlane() == y.getPlane()) {
-                temp = x.merge(y);
+QStringList Solver::prep() {
+    bool changed = true;
+    while (changed) {
+        QStringList preparedResult;
+        changed = false;
+        QString temp = "";
+        for (auto s:result) {
+            if (s == "|") {
+                preparedResult << s;
             } else {
-                if (!temp.isEmpty())
-                    preparedResult << temp;
-                temp = s;
+                Direction x(temp);
+                Direction y(s);
+                if (!temp.isEmpty() && !s.isEmpty() && x.getPlane() == y.getPlane()) {
+                    temp = x.merge(y);
+                    changed = true;
+                } else {
+                    if (!temp.isEmpty())
+                        preparedResult << temp;
+                    temp = s;
+                }
             }
         }
+        if (!temp.isEmpty())
+            preparedResult << temp;
+        result = preparedResult;
     }
-    if (!temp.isEmpty())
-        preparedResult << temp;
 
-    return preparedResult;
+    return result;
 }
 
 //***CROSS_SECTION***
@@ -614,8 +584,8 @@ const Cube &Solver::getCube() const {
 }
 
 void Solver::makeSeparator() {
-    if (result.isEmpty() || result.last() != "|")
-        result << "|";
+    //if (result.isEmpty() || result.last() != "|")
+    //    result << "|";
 }
 
 //***END_OF_ALL_ENTIRE_YOUR_EXISTENCES***

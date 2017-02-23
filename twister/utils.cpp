@@ -76,6 +76,8 @@ QString planeToString(PlaneType p) {
             return "B";
         case LEFT:
             return "L";
+        case WHOLE_Y:
+            return "y";
         default:
             return "kiddo something broken wow such unexpected";
     }
