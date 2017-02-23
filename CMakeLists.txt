@@ -11,5 +11,7 @@ add_subdirectory(solver)
 find_package(Qt5Widgets REQUIRED)
 
 add_executable(cube_all main.cpp ${SOURCE_FILES})
+add_executable(cube_solve solver/main.cpp ${SOURCE_FILES})
 
+target_link_libraries(cube_solve lib_gen lib_twist lib_solve Qt5::Widgets)
 target_link_libraries(cube_all lib_gen lib_twist lib_solve Qt5::Widgets)
