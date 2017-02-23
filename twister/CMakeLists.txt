@@ -3,6 +3,7 @@ set(SOURCE_FILES
         utils.h utils.cpp
         cube.h cube.cpp
         direction.h direction.cpp
+        mask.h mask.cpp
         )
 
 find_package(Qt5Widgets REQUIRED)
