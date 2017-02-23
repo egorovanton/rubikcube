@@ -19,12 +19,12 @@ int main() {
 
     int i = 0;
     int dif = 0;
-    int x = 1'000'000;
+    int x = 3'000;
 
     while (++i < x) {
         Cube cube;
         const QStringList &list = simpleGen.getNewScramble();
-        //cout << /*list.join(" ").toStdString() <<*/ endl;
+        cout << i << endl;
         for (auto str: list) {
             cube.rotate(str);
         }
@@ -69,8 +69,6 @@ int main() {
             }
 
         }
-        string q;
-        //std::cin >> q;
     }
     cout << dif/x;
 }

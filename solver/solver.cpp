@@ -333,7 +333,7 @@ void Solver::middleLine() {
             inPlace++;
         }
     }
-    while (inPlace <= 4) {
+    while (inPlace < 4) {
         makeSeparator();
         if (nextMiddleCubie()) inPlace++;
     }
@@ -558,8 +558,6 @@ bool Solver::uppCornerMatch(std::tuple<PlaneType, PlaneType, PlaneType> t, Plane
 //***END_OF_UPER_CORNERS_SECTION***
 
 
-
-
 //***COMMON***
 QString Solver::topTwist(PlaneType from, PlaneType to) {
     if (from == to)
@@ -590,65 +588,3 @@ void Solver::makeSeparator() {
 
 //***END_OF_ALL_ENTIRE_YOUR_EXISTENCES***
 
-
-
-
-/* kinda backup
-         static const QVector<Triple> corners = {
-                {U, F, R}, {F, R, U}, {R, U, F},
-                {B, U, R}, {F, U, L}, {F, U, B},
-                {R, F, DOWN}, {DOWN, R, F}, {F, DOWN, R}
-        };
-
-        for(int cornerInd = 0; cornerInd < corners.length(); cornerInd++){
-            Mask corner;
-            static auto const pos1 = T(F, DOWN, R);
-            corner.setCubie(corners[cornerInd], pos1);
-            if (cube.fitsMask(corner)){
-                static const QVector<QVector<Duo>> middleD = {{
-                        {F, R}, {R, F}, {U, R}, {L, U}, {U, B},
-                        {U, L}, {B, U}, {R, U}, {F, U}, {U, F}
-                    }, {
-                        {F, R}, {R, F}, {F, U}, {U, B}, {L, U},
-                        {B, U}, {U, L}, {U, F}, {U, R}, {R, U}
-                    }, {
-                        {F, R}, {R, F}, {F, U},
-                        {U, F}, {R, U}, {U, F}
-                    }, {F, U}, {U, R}, {{F, U}, {U, R}}, {
-                        {F, R}, {R, F}, {F, U}, {U, R}
-                    }, {
-                        {F, R}, {R, F}, {F, U}, {U, R}
-                    }, {
-                        {F, U}, {U, R}, {R, F}
-                    }
-                };
-                static auto const pos2 = D(F, R);
-                static const QVector<QVector<QStringList>> rot = {{
-                        S("U' R U' R' U2 R U' R'"), S("U2 R U R' y U' L' U L"),
-                        S("U R U' R'"), S("F' U' F"), S("U' R U R' U2 R U' R'"),
-                        S("U' R U2 R' U2 R U' R'"), S("F R U R' U' F' R U' R'"),
-                        S("y' R U2 R2 U' R2 U' R'"), S("y' U R' U R U' R' U' R"),
-                        S("R U R' U2 R U' R' U R U' R'")
-                    }, {
-                        S("U' R U2' R' U R U R'"), S("U F' U' F U' R U R'"),
-                        S("y U' L' U L"), S("R U R'"), S("y' U R' U' R U R' U2 R"),
-                        S("y' U R' U2 R U R' U2 R"), S("U' R U R' U R U R'"),
-                        S("R U' R' U R U' R' U2 R U' R'"), S("U' R U' R' U R U R'")
-                        S("R U' R' y' U2 R' U' R")
-                    }, {
-                        S("U R U' R' U R U' R' U R U' R'"), S("R U' R' U y' R' U R"),
-                        S("y' R' U2 R U R' U' R"), S("R U2 R' U' R U R'"),
-                        S("y U' L' U L U L' U L U' L' U L"), S("R U' R' U R U2 R' U R U R'")
-                    }, {S("y' R' U2 R U' R' U R")}, {S("R U2 R' U R U' R'")},{
-                        S("R U R' F' U' F"), S("R U R' U R U' R'")
-                    }, {
-                        S("R U' R' U' R U R' U2 R U' R'"), S("R F U R U' R' F' U' R'"),
-                        S("y L' U' L U L' U' L"), S("R U' R' U R U' R'")
-                    }, {
-                        S("R U2 R U R' U R U2 R2'"), S("y F R U2 R' F' L' U' L"),
-                        S("y L' U L U' L' U L"), S("R U R' U' R U R'")
-                    }, {
-                        S("U R U' R' F R' F' R"), S("R' F' R U R U' R' F"), S("R U' R' U y' R' U2 R U2' R' U R")
-                    }
-                };
-*/

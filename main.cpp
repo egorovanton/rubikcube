@@ -43,7 +43,7 @@ void printSolution(const QStringList& scramble) {
     Cube c;
     c.rotate(scramble);
     Solver solver(c);
-    qStdOut() << solver.getPreparedResult().join(" ") << "\n";
+    qStdOut() << solver.getPreparedResultF2L().join(" ") << "\n";
 }
 
 int main() {
